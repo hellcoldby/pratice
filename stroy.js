@@ -3,7 +3,7 @@
  * @Author: ygp
  * @Date: 2021-03-17 16:53:19
  * @LastEditors: ygp
- * @LastEditTime: 2021-03-17 17:22:38
+ * @LastEditTime: 2021-03-17 17:25:15
  */
 
 //你发明了一个暴富提款机
@@ -34,4 +34,6 @@ Function.prototype.toCall = function(obj){
     delete obj.mac; //3. 删除机器的归属
 }
 
+// 一次放一张钱 ，不过瘾，能不能一次放一捆钱呢？
+magic.apply(obj, [50, 100, 500, 1000]); // 燥起来
 
