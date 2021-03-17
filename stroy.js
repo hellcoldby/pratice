@@ -3,13 +3,14 @@
  * @Author: ygp
  * @Date: 2021-03-17 16:53:19
  * @LastEditors: ygp
- * @LastEditTime: 2021-03-17 17:25:15
+ * @LastEditTime: 2021-03-17 17:31:46
  */
 
 //你发明了一个暴富提款机
 function magic(x){
     this.money = x * 10;
     console.log(this ,'放入了'+num +'元', '现在拥有'+ this.money+'元');
+    return this.money;
 };
 
 // 不管谁放钱到里边，都会变成公家（window)的
@@ -33,7 +34,48 @@ Function.prototype.toCall = function(obj){
     obj.mac(); // 2. 运作暴富
     delete obj.mac; //3. 删除机器的归属
 }
+//参数
+Function.prototype.toCall = function(obj){
+    let args = [];
+    for(let i=1; i<arguments.length; i++){
+       args.push(arguments[i] + '');
+    }
+
+
+    // obj.mac = this; // 1.转译机器归属 --- 登记到你的名下
+    
+    const res =  eval('fn.con('+args+')');
+    // const res = obj.mac(); // 2. 运作暴富
+    // delete obj.mac; //3. 删除机器的归属
+    return res;
+
+}
+
 
 // 一次放一张钱 ，不过瘾，能不能一次放一捆钱呢？
-magic.apply(obj, [50, 100, 500, 1000]); // 燥起来
+magic.apply(obj, [50, 100, 500, 1000]); // 造起来
 
+Function.prototype.toApply = function(obj, arr){
+
+    //判断第二个参数
+    let args = [];
+    let res = null;
+    if(!arr){
+        res = fn.con();
+    }else{
+        for(let i=1; i<arr.length; i++){
+            args.push(arr[i]+'');
+        }
+        res =  eval('fn.con('+ args +')');
+    }
+
+    
+
+    // obj.mac = this; // 1.转译机器归属 --- 登记到你的名下
+    
+    // const res =  eval('fn.con('+args+')');
+    // const res = obj.mac(); // 2. 运作暴富
+    // delete obj.mac; //3. 删除机器的归属
+    // return res;
+
+}
