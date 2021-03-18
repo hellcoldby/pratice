@@ -16,7 +16,8 @@
 - <font size=2 color=#499C61>不管谁放钱到里边，都会变成公家（window)的</font>
 ``` 
     magic(10);
-    //打印结果： Window {window: Window, self: Window, document: document, name: "", location: Location, …} "放入了10元" "现在拥有" 1000
+    //打印结果： 
+    //Window {window: Window, self: Window, document: document, name: "", location: Location, …} "放入了10元" "现在拥有" 1000
 ```
 
 - <font size=2 color=#499C61>别人不乐意了，自己的钱，翻倍了，但充公了。这不行啊</font>
@@ -54,10 +55,10 @@
         }
 
 
-        // obj.mac = this; // 1.转译机器归属 --- 登记到你的名下
+        // obj.mac = this; // 1.机器归属 --- 登记到你的名下
         
         const res =  eval('fn.con('+args+')');
-        // const res = obj.mac(); // 2. 运作暴富
+        // const res = obj.mac(); // 2. 机器运行
         // delete obj.mac; //3. 删除机器的归属
         return res;
 
@@ -85,10 +86,10 @@
 
         
 
-        // obj.mac = this; // 1.转译机器归属 --- 登记到你的名下
+        // obj.mac = this; // 1.机器归属 --- 登记到你的名下
         
         // const res =  eval('fn.con('+args+')');
-        // const res = obj.mac(); // 2. 运作暴富
+        // const res = obj.mac(); // 2. 机器运行
         // delete obj.mac; //3. 删除机器的归属
         // return res;
 
