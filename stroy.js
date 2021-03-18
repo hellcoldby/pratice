@@ -3,7 +3,7 @@
  * @Author: ygp
  * @Date: 2021-03-17 16:53:19
  * @LastEditors: ygp
- * @LastEditTime: 2021-03-18 11:28:39
+ * @LastEditTime: 2021-03-18 12:15:58
  */
 
 //你发明了一个暴富提款机
@@ -110,6 +110,22 @@ magic.prototype.ext = function(){
         console.log('lalalalala');
     }
 }
+
+/**
+ * 
+ * 什么时候用继承呢？
+ * 给机器扩展功能的时候
+ * 你造了一台机器，但想 共享使用 公用另一台机器的个别功能。
+ * 
+ * 什么时候用new?
+ * 你要利用这台机器，批量生成东西的时候。
+ */
+
+
+
+
+
+
 
 //toBind 返回的可执行函数 需要继承这些功能才行
 Function.prototype.toBind = function(obj){
