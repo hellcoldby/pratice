@@ -1,28 +1,33 @@
 # 用故事讲代码
 
 
-- 你发明了一个暴富提款机
+- <font size=4 color=#4A4543>你发明了一个暴富提款机</font>
 
 ```
+
     function magic(x){
         this.money = x * 10;
         console.log(this ,'放入了'+num +'元', '现在拥有'+ this.money+'元');
         return this.money;
     };
+
 ```
 
-- 不管谁放钱到里边，都会变成公家（window)的
+- <font size=4 color=#4A4543>不管谁放钱到里边，都会变成公家（window)的</font>
 ``` 
     magic(10);
     //打印结果： Window {window: Window, self: Window, document: document, name: "", location: Location, …} "放入了10元" "现在拥有" 1000
 ```
 
-- 别人不乐意了，自己的钱，翻倍了，但充公了。这不行啊
+- <font size=4 color=#4A4543>别人不乐意了，自己的钱，翻倍了，但充公了。这不行啊</font>
+
 
 
 ## call
-- 怎么办啊？
-- 最好提款机有个识别信息的口，你插卡啊，身份证
+
+-  <font size=4 color=#4A4543> 怎么办啊？</font>
+
+-  <font size=4 color=#4A4543>最好提款机有个识别信息的口，你插卡啊，身份证</font>
 ```
     //身份证
     let obj = {name:'tom'};
@@ -32,7 +37,7 @@
     //打印结果：  {name: "tom", money: 500} "放入了50元" "现在拥有" 500
 ```
 
-- 这个call 是如何制造出来的呢？
+- <font size=4 color=#4A4543>这个call 是如何制造出来的呢？</font>
 ```
     Function.prototype.toCall = function(obj){
         obj.mac = this; // 1.机器归属 --- 登记到你的名下
@@ -40,7 +45,7 @@
         delete obj.mac; //3. 删除机器的归属
     }
 ```
-- 参数
+- <font size=4 color=#4A4543>参数</font>
 ```
     Function.prototype.toCall = function(obj){
         let args = [];
@@ -59,7 +64,7 @@
     }
 ```
 ## apply
-- 一次放一张钱 ，不过瘾，能不能一次放一捆钱呢？
+-  <font size=4 color=#4A4543>一次放一张钱 ，不过瘾，能不能一次放一捆钱呢？</font>
 ```
     magic.apply(obj, [50, 100, 500, 1000]); // 造起来
 ```
@@ -89,12 +94,12 @@
 
     }
 ```
--  还有，call 和 apply 都是立即执行， 能不能先把钱放进去，我说开始生产，然后再吐呢
+-  <font size=4 color=#4A4543>还有，call 和 apply 都是立即执行， 能不能先把钱放进去，我说开始生产，然后再吐呢</font>
 ```
     magic.bind(obj, 50);
 ```
 
-- 思路: 返回一个可执行的函数，里边是执行的动作
+- <font size=4 color=#4A4543>思路: 返回一个可执行的函数，里边是执行的动作</font>
 ```
     Function.prototype.toBind = function(obj){
         const _this = this;
@@ -104,7 +109,7 @@
     }
 ```
 
-- 参数处理
+- <font size=4 color=#4A4543>参数处理</font>
 ```
 Function.prototype.toBind = function(obj){
 
@@ -119,7 +124,7 @@ Function.prototype.toBind = function(obj){
 }
 ```
 
-- 之前的机器，还有一些扩展的功能，例如：发现你的钱超过10000会播放歌曲
+- <font size=4 color=#4A4543>之前的机器，还有一些扩展的功能，例如：发现你的钱超过10000会播放歌曲</font>
 ```
     magic.prototype.ext = function(){
         if(this.money>=10000){
