@@ -35,8 +35,8 @@
 - 这个call 是如何制造出来的呢？
 ```
     Function.prototype.toCall = function(obj){
-        obj.mac = this; // 1.转译机器归属 --- 登记到你的名下
-        obj.mac(); // 2. 运作暴富
+        obj.mac = this; // 1.机器归属 --- 登记到你的名下
+        obj.mac(); // 2. 启动机器
         delete obj.mac; //3. 删除机器的归属
     }
 ```
