@@ -13,6 +13,6 @@
 - [手写bind](write_bind.js)
 
 
-- [new 和 继承 何时使用](inheritance.js)
 - [原型链和闭包](prototype_chain.js)
 - [八种继承](inheritance.js)
+- [深拷贝和浅拷贝](copy.js)
