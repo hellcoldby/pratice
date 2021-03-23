@@ -16,3 +16,5 @@
 - [原型链和闭包](prototype_chain.js)
 - [八种继承](inheritance.js)
 - [深拷贝和浅拷贝](copy.js)
+
+- [节流防抖](throttle_debounce.js)
