@@ -5,7 +5,7 @@
  * 
  * 
  * 
- * 函数作为Promise的静态方法
+ * Promise的静态方法
  * 1. Promise.resolve(yyy) 代表执行成功 --- then中传递yyy
  * 2. Promise.reject(xxx) 代表执行失败 --- catch 中传递xxx
  * 
@@ -27,3 +27,32 @@
  * p1.then()--- 抛出错误，p2.then()也抛出错误
  * 
  */
+
+class MyPromise {
+    constructor(handler) {
+        if(typeof handler !== 'function'){
+            throw new Error ('MyPromise must accept a function as a paramter');
+        }
+        this._status = 'PENDING';
+        this._value = undefined;
+
+        try{
+            handler(this._resolve.bind(this), this._reject.bind(this));
+        }catch(err){
+            this._reject(err);
+        }
+    }
+
+    _resolve(val){
+        if(this._status !== 'PENDING') return;
+        this._status = 'FULFILLED';
+        this._value = val;
+    }
+
+    _reject(err){
+        if(this._status !== 'PENDING') return;
+        this._status = 'REJECTED';
+        this._value = err;
+    }
+
+}
