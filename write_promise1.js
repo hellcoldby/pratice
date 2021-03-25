@@ -1,3 +1,10 @@
+/*
+ * @Description: promise 解析
+ * @Author: ygp
+ * @Date: 2021-03-25 16:57:34
+ * @LastEditors: ygp
+ * @LastEditTime: 2021-03-25 19:17:16
+ */
 /**
  * Promise函数做参数：
  * 1. resolve --- resolve(yyy)代表执行成功 --- then 中传递yyy
@@ -35,6 +42,8 @@ class MyPromise {
         }
         this._status = 'PENDING';
         this._value = undefined;
+        this._fulfilledQueues = []; //成功的队列
+        this._rejectedQueues = []; //失败的队列
 
         try{
             handler(this._resolve.bind(this), this._reject.bind(this));
@@ -53,6 +62,58 @@ class MyPromise {
         if(this._status !== 'PENDING') return;
         this._status = 'REJECTED';
         this._value = err;
+    }
+
+    then(onFulfilled, onRejected){
+        const {_value, _status} = this;
+
+        return new MyPromise((onFulfilledNext, onRejectedNext)=>{
+            function fulfilled(value){
+                try{
+                    if(typeof onFulfilled !== 'function'){
+                        onFulfilledNext(value);
+                    }else{
+                        let res = onFulfilled(value);
+                        if(res instanceof MyPromise){
+                            res.then(onFulfilledNext, onRejectedNext);
+                        }else{
+                            onFulfilledNext(res);
+                        }
+                    }
+                }catch(err){
+                    onRejectedNext(err);
+                }
+            };
+
+            function rejected(error){
+                try{
+                    if(typeof onRejected !== 'function'){
+                        onRejectedNext(error);
+                    }else{
+                        let res = onRejected(error);
+                        if(res instanceof MyPromise){
+                            res.then(onFulfilledNext, onRejectedNext);
+                        }else{
+                            onFulfilledNext(res);
+                        }
+                    }
+                }catch(err){
+                    onRejectedNext(err)
+                }
+            };
+            switch(_status){
+                case 'PENDING':
+                    this._fulfilledQueues.push(onFulfilled);
+                    this._rejectedQueues.push(onRejected);
+                    break;
+                case 'FULFILLED':
+                    fulfilled(_value);
+                    break;
+                case 'REJECTED':
+                    rejected(_value);
+                    break;
+            }
+        });
     }
 
 }
