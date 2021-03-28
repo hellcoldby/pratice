@@ -3,19 +3,24 @@
  * @Author: ygp
  * @Date: 2021-03-25 16:57:34
  * @LastEditors: ygp
- * @LastEditTime: 2021-03-26 11:15:41
+ * @LastEditTime: 2021-03-28 21:25:07
  */
 /**
- * Promise函数做参数：
- * 1. resolve --- resolve(yyy)代表执行成功 --- then 中传递yyy
- * 2. reject  --- reject(xxx)代表执行失败 --- catch 中传递xxx
- * 
- * 
+ * Promise 接收一个函数作为参数
+ * function(resolve, reject){} -- 函数有个两个参数（也是函数）
+ * resolve() --- 成功时执行
+ * reject() --- 失败时执行
  * 
  * Promise的静态方法
- * 1. Promise.resolve(yyy) 代表执行成功 --- then中传递yyy
- * 2. Promise.reject(xxx) 代表执行失败 --- catch 中传递xxx
+ * 1. Promise.resolve() --- 成功时执行
+ * 2. Promise.reject() --- 失败时执行
  * 
+ * resolve('成功时执行的内容')
+ * reject('失败时传递的内容') 
+ * 
+ * Promise.prototype.then(onFulfilled, onRejected) --- then有两个函数参数
+ * onFulfilled(res) --- res代表成功时传递的内容
+ * onRejected(err) --- err代表失败时传点的内容   
  * 
  * 
  * 
@@ -34,24 +39,30 @@
  * p1.then()--- 抛出错误，p2.then()也抛出错误
  * 
  */
-// 第一版 核心代码
-class MyPromise{
-    constructor(handler){
-        try{
-            handler(this._resolve.bind(this), this._reject.bind(this));
-        }catch(err){
-            this.reject(err);
-        }
+// 第一版代码
+function Promise(fn){
+    
+    this._value = undefined;
 
-        this._value = undefined;
+    try{
+        fn(this._resolve.bind(this), this._reject.bind(this))
+    }catch(err){
+        this._reject(err);
     }
 
-    _resolve(val){
+    this._resolve = function(val){
         this._value = val;
     }
-
-    _reject(err){
+    this._reject = function(err){
         this._value = err;
     }
+
+}
+
+Promise.prototype.then = function(){
+
+}
+
+Promise.prototype.catch = function(){
 
 }
