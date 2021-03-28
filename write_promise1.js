@@ -3,7 +3,7 @@
  * @Author: ygp
  * @Date: 2021-03-25 16:57:34
  * @LastEditors: ygp
- * @LastEditTime: 2021-03-28 21:25:07
+ * @LastEditTime: 2021-03-28 23:22:59
  */
 /**
  * Promise 接收一个函数作为参数
@@ -59,8 +59,24 @@ function Promise(fn){
 
 }
 
-Promise.prototype.then = function(){
+Promise.prototype.then = function(onFulfilled, onRejected){
+    const {_value} = this;
+    return new Promise(function(resolve, reject){
 
+        
+        if(onFulfilled !== 'function'){
+            resolve(value)
+        }else{
+            let res = onFulfilled(value);
+            if(res instanceof Promise){
+                res.then(resolve, reject);
+            }else{
+                resolve(res);
+            }
+        }
+
+        
+    })
 }
 
 Promise.prototype.catch = function(){
