@@ -3,7 +3,7 @@
  * @Author: ygp
  * @Date: 2021-03-25 16:57:34
  * @LastEditors: ygp
- * @LastEditTime: 2021-03-28 23:22:59
+ * @LastEditTime: 2021-03-29 08:27:38
  */
 /**
  * Promise 接收一个函数作为参数
@@ -43,6 +43,7 @@
 function Promise(fn){
     
     this._value = undefined;
+    this._statues = 'PENDING';
 
     try{
         fn(this._resolve.bind(this), this._reject.bind(this))
@@ -51,11 +52,33 @@ function Promise(fn){
     }
 
     this._resolve = function(val){
-        this._value = val;
+        if(this._statues !== 'PENDING') return;
+        const run = () => {
+           this._statues = 'FULFILLED';
+           this._value = val;
+           let cb;
+           while (cb = this._fulfilledQueues.shift()){
+               cb(val);
+           }
+       }
+       setTimeout(()=>run(), 0);
     }
     this._reject = function(err){
-        this._value = err;
+        if(this._statues !== 'PENDING') return;
+        const run =() =>{
+            this._statues = 'REJECTED';
+            this._value = err;
+            let cb;
+            while(cb = this._rejectedQueues.shift()){
+                cb(err);
+            }
+        }
+
+        setTimeout(()=>run(), 0);
     }
+
+    this._fulfilledQueues = [];
+    this._rejectedQueues = [];
 
 }
 
@@ -63,18 +86,45 @@ Promise.prototype.then = function(onFulfilled, onRejected){
     const {_value} = this;
     return new Promise(function(resolve, reject){
 
-        
-        if(onFulfilled !== 'function'){
-            resolve(value)
-        }else{
-            let res = onFulfilled(value);
-            if(res instanceof Promise){
-                res.then(resolve, reject);
+        //准备成功执行 
+        function await_resolve (value){
+            if(onFulfilled !== 'function'){
+                resolve(value)
             }else{
-                resolve(res);
+                let res = onFulfilled(value);
+                if(res instanceof Promise){
+                    res.then(resolve, reject);
+                }else{
+                    resolve(res);
+                }
+            }
+        }
+        //准备失败执行
+        function await_reject(error){
+            if(typeof onRejected !== 'function'){
+                reject(err);
+            }else{
+                let res = onRejected(error);
+                if(res instanceof Promise){
+                    res.then(resolve, reject);
+                }else{
+                    reject(res)
+                }
             }
         }
 
+        switch(_statues){
+            case 'PENDING':
+                this._fulfilledQueues.push(await_resolve);
+                this._rejectedQueues.push(await_reject);
+                break;
+            case 'FULFILLED':
+                await_resolve(_value);
+                break;
+            case 'REJECTED':
+                await_reject(_value);
+                break;
+        }
         
     })
 }
