@@ -57,16 +57,19 @@ magic.apply(obj, [50, 100, 500, 1000]); // 造起来
 
 Function.prototype.toApply = function(obj, arr){
 
+    obj.mac = this;
     //判断第二个参数
     let args = [];
     let res = null;
+
+
     if(!arr){
-        res = fn.con();
+        res = obj.mac();
     }else{
         for(let i=1; i<arr.length; i++){
             args.push(arr[i]+'');
         }
-        res =  eval('fn.con('+ args +')');
+        res =  eval('obj.mac('+ args +')');
     }
 
     
@@ -99,7 +102,7 @@ Function.prototype.toBind = function(obj){
     // const _this = this;
     // return function(){
             const bindArgs = [].slice.call(arguments);
-            const mergeArgs = args.concat() //合并参数
+            const mergeArgs = args.concat(bindArgs) //合并参数
              _this.apply(obj, mergeArgs);
     // }
 }

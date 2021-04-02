@@ -61,10 +61,10 @@ myPromise.prototype.then = function(onFulfilled, onRejected){
                 this._rejectedQueues.push(await_reject);
                 break;
             case 'FULFILLED':
-                await_resolve(this._value);
+                onFulfilled(this._value);
                 break;
             case 'REJECTED':
-                await_reject(this._value);
+                onRejected(this._value);
                 break;
         }
     });
