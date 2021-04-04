@@ -3,10 +3,10 @@
  * @Author: ygp
  * @Date: 2021-02-21 19:06:19
  * @LastEditors: ygp
- * @LastEditTime: 2021-04-05 03:21:49
+ * @LastEditTime: 2021-04-05 03:27:01
 -->
 # JavaScript高级
-- [用故事讲call、apply、bind的思路](story/stroy.md)
+- [用故事讲call、apply、bind的思路](story/stroy.js)
 - [手写new](write_new.js)
 - [手写call](write_call.js)
 - [手写apply](write_apply.js)
