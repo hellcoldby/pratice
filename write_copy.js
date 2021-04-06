@@ -1,3 +1,10 @@
+/*
+ * @Description: 
+ * @Author: ygp
+ * @Date: 2021-03-27 14:18:34
+ * @LastEditors: ygp
+ * @LastEditTime: 2021-03-27 15:48:21
+ */
 
 
 
@@ -54,3 +61,24 @@ console.log(deepClone(a));
 console.log(deepClone(b));
 console.log(deepClone(c));
 
+//3. 深拷贝
+
+function isObject(obj){
+    if(typeof obj === 'object' && obj !== null) return true;
+}
+
+function myClone(source){
+    
+    if(!isObject(source)) return source;
+    let target = Array.isArray(source)? []:{};
+    if( key in source){
+        if(Object.prototype.hasOwnProperty.call(source,key)){
+            if(isObject(source)){
+                target[key] = myClone(source);
+            }else{
+                target[key] = source[key];
+            }
+        }
+    }
+    return target;
+}

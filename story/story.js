@@ -3,7 +3,7 @@
  * @Author: ygp
  * @Date: 2021-03-17 16:53:19
  * @LastEditors: ygp
- * @LastEditTime: 2021-03-18 12:15:58
+ * @LastEditTime: 2021-04-05 03:26:37
  */
 
 //你发明了一个暴富提款机
@@ -44,7 +44,7 @@ Function.prototype.toCall = function(obj){
 
     // obj.mac = this; // 1.转译机器归属 --- 登记到你的名下
     
-    const res =  eval('fn.con('+args+')');
+    const res =  eval('obj.mac('+args+')');
     // const res = obj.mac(); // 2. 运作暴富
     // delete obj.mac; //3. 删除机器的归属
     return res;
@@ -76,7 +76,7 @@ Function.prototype.toApply = function(obj, arr){
 
     // obj.mac = this; // 1.转译机器归属 --- 登记到你的名下
     
-    // const res =  eval('fn.con('+args+')');
+    // const res =  eval('obj.mac('+args+')');
     // const res = obj.mac(); // 2. 运作暴富
     // delete obj.mac; //3. 删除机器的归属
     // return res;

@@ -35,7 +35,7 @@ Object.create = function(proto){
 
 
     let obj = {}
-    const res = F.call(obj);
+   
     obj.__proto__ = F.prototype;
     return  res instanceof Object? res: obj;
 

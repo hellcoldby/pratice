@@ -3,19 +3,19 @@
  * @Author: ygp
  * @Date: 2021-02-21 19:06:19
  * @LastEditors: ygp
- * @LastEditTime: 2021-03-28 22:07:13
+ * @LastEditTime: 2021-04-05 03:28:14
 -->
 # JavaScript高级
-- [用故事讲call、apply、bind的思路](story/stroy.md)
+- [用故事讲call、apply、bind的思路](story/story.js)
 - [手写new](write_new.js)
 - [手写call](write_call.js)
 - [手写apply](write_apply.js)
 - [手写bind](write_bind.js)
 - [手写promise](write_promise.js)
-
-
-- [原型链和闭包](prototype_chain.js)
+- [柯理化](curry.js)
+- [深拷贝和浅拷贝](write_copy.js)
 - [八种继承](inheritance.js)
-- [深拷贝和浅拷贝](copy.js)
-
+- [原型链和闭包](prototype_chain.js)
 - [节流防抖](throttle_debounce.js)
+
+
