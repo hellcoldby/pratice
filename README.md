@@ -15,7 +15,7 @@
 - [柯理化](curry.js)
 - [深拷贝和浅拷贝](write_copy.js)
 - [八种继承](inheritance.js)
-- [原型链和闭包](prototype_chain.js)
+- [浅谈原型](prototype_chain.js)
 - [节流防抖](throttle_debounce.js)
 
 

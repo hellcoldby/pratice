@@ -1,5 +1,5 @@
 /*
- * @Description: 原型链
+ * @Description: 原型
  * @Author: ygp
  * @Date: 2021-02-21 19:28:26
  * @LastEditors: ygp
@@ -7,40 +7,39 @@
  */
 
  /**
+  * 
   * 1. js中，万物皆是对象。
   * 2. 对象又分为 普通对象 和 函数对象。
-  * 3. 内置函数对象 Function， 所有函数都是由它派生的
-  *     
-  * 4. 
+  *   
+  *  内置的函数对象 ---- Function
+  *  没有自己的属性和方法
+  *  它从自己的原型链 Function.prototype 上继承一些属性和方法。
+  *  
+  *  Function.prototype.apply();
+  *  Function.prototype.bind();
+  *  Function.prototype.call();
+  *  Function.prototype.toString();
+  *   
+  *   可以用 new Function ('a','b', 'return a +b') 来创建函数
   * 
-  * 5. 打印 Function.__proto__  , Function.prototype 结果是一样的都是底层源码 f()[native code]
-  *    所以 Function.__proto__  === Function.prototype //true 
-  *    所有的函数对象出生，都会带上 prototype 和 __proto__
-  *     prototype --- 身份证信息
-  *     __proto__ --- 基因链信息
-  *     
   * 
+  *   注意： 
+  *   function createFunction1() {
+        var x = 20;
+        return new Function('return x;'); // 这里的 x 指向最上面全局作用域内的 x
+     }
   * 
-  * 
-  * 6. 内置函数对象Object
-  *    Object 的prototype(身份信息)可以打印出来
-  *    Object.__proto__ (基因链信息)也指向了  f()[native code]
-  * 7. new Object() 或者 {} 是没有 （prototype）身份信息的。 只有__proto__
-  * 
-  *     ({}).__proto__.__proto__ //null
-  *     Object.prototype.__proto__ //null
-  * 
-  * 8. 在JavaScript 中，每个对象都有一个指向它的原型（prototype）对象的内部链接。
-  *    这个原型对象又有自己的原型，直到某个对象的原型为 null 为止（也就是不再有原型指向），
-  *    组成这条链的最后一环。这种一级一级的链结构就称为原型链（prototype chain）。
-  *    
+  *  
+  *   函数声明创建的function (){}函数  是一个 Function 对象，具有 Function 对象的所有属性、方法和行为。
+  *   函数声明 有变量提升
+  *   函数表达式 没有提升
+  *   
+  *   
+  *   
   * 
   */
 
-  function grandFar(){}
 
-  function far(){}
 
-  function son(){}
 
   
