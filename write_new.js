@@ -3,7 +3,7 @@
  * @Author: ygp
  * @Date: 2021-02-21 19:06:19
  * @LastEditors: ygp
- * @LastEditTime: 2021-05-25 23:36:10
+ * @LastEditTime: 2021-05-25 23:39:29
  */
 
 // 模拟实现一个 new 函数  new fn() --> toNew(fn)
@@ -17,7 +17,7 @@
     const fn = [].shift.call(arguments);
     obj.__proto__ = fn.prototype;
     const res = fn.apply(obj, arguments);
-    obj.__proto__ = fn.prototype;
+ 
 
     return res instanceof Object? res: obj;
  }
