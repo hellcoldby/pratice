@@ -3,19 +3,20 @@
  * @Author: ygp
  * @Date: 2021-02-21 19:06:19
  * @LastEditors: ygp
- * @LastEditTime: 2021-03-22 10:16:05
+ * @LastEditTime: 2021-04-05 14:56:34
  */
 
 // 模拟实现一个 new 函数  new fn() --> toNew(fn)
 
-// 目的： 照着原函数 仿造一个新的函数。
-// 思路： 
+
+//核心思路:  1，用一个空对象，通过call 继承 目标函数（第一个参数）的私有属性， 
+//2.改变空对象的原型链 赋值为 目标函数的原型
 
  function toNew(){
-    let obj = Object.create(null);
+    let obj = new Object();
     const fn = [].shift.call(arguments);
-    obj.prototype = fn.prototype;
     const res = fn.apply(obj, arguments);
+    obj.__proto__ = fn.prototype;
 
     return res instanceof Object? res: obj;
  }

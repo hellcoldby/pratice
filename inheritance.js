@@ -3,7 +3,7 @@
  * @Author: ygp
  * @Date: 2021-03-18 12:19:12
  * @LastEditors: ygp
- * @LastEditTime: 2021-03-22 10:33:05
+ * @LastEditTime: 2021-04-05 22:10:26
  */
 
 // 先对比一下 new  和 继承的 核心思路
@@ -36,8 +36,22 @@
 
 //1. 对象继承 --- 用Object.create();
 let person = {name: 'jack'}
-// 相当于 p1.prototype = person.prototype
 let p1 = Object.create(person);
+
+/**
+ *  根据mdn 文档 模拟
+ *  Object.create() 的polyfill
+ *  Object.create = function(proto){
+ *      function F(){}
+ *      F.prototype = proto
+ *      return  new F();
+ *  }
+ * 
+ * 
+ */
+
+
+
 
 
 
@@ -76,6 +90,7 @@ function extend(parent, child) {
 
 
 //5. 最成熟的继承方案  这是最成熟的方法，也是现在库实现的方法
+// call 继承
 function inheritPrototype(child, parent){
     let pro = Object.create(parent.prototype);
     //相当于

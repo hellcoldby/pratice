@@ -1,3 +1,10 @@
+/*
+ * @Description: 
+ * @Author: ygp
+ * @Date: 2021-03-27 14:18:34
+ * @LastEditors: ygp
+ * @LastEditTime: 2021-04-05 22:33:11
+ */
 
 
 // 1. 节流 --- 多次点击，每隔一段时间执行一次
@@ -19,7 +26,6 @@ function debounce(fn, await){
         clearTimeout(timer);
         timer = setTimeout(()=>{
         fn.apply(this, arguments);
-        
         }, await)
     }
 }
