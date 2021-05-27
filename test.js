@@ -3,7 +3,7 @@
  * @Author: ygp
  * @Date: 2021-05-25 23:35:53
  * @LastEditors: ygp
- * @LastEditTime: 2021-05-28 01:26:02
+ * @LastEditTime: 2021-05-28 01:46:26
  */
 
 
@@ -23,15 +23,34 @@ MyPromise.prototype.reject = function(err){
 };
 MyPromise.prototype.then = function(onFulfilled, onRejected){
 
+  const {value:_value, status:_status} = this;
+
   return new MyPromise((nextResolve, nextRejected) => {
+
+    let checkFulfilled = function(_value){
+      //如果不是函数,继续传递_value
+      if(typeof onFulfilled !== 'function'){ 
+         nextResolve(_value);
+      }
+    }
+
+    let checkRejected = function(_value){
+      if(typeof onRejected !== 'function'){ 
+        nextRejected(_value);
+      }
+    }
+
+
     switch(this.status){
       case 'pending':
         break;
       case 'fulfilled':
-        onFulfilled(this.value);
+          //判断onFulfilled的类型
+          checkFulfilled(_value);
         break;
       case 'rejected':
-        onRejected(this.value);
+          //判断onRejected的类型
+          checkRejected(_value);
         break;
     }
   });
