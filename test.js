@@ -3,7 +3,7 @@
  * @Author: ygp
  * @Date: 2021-05-25 23:35:53
  * @LastEditors: ygp
- * @LastEditTime: 2021-05-28 01:46:26
+ * @LastEditTime: 2021-05-28 01:47:47
  */
 
 
@@ -31,12 +31,16 @@ MyPromise.prototype.then = function(onFulfilled, onRejected){
       //如果不是函数,继续传递_value
       if(typeof onFulfilled !== 'function'){ 
          nextResolve(_value);
+      }else{
+        //如果个promise 就放进队列
       }
     }
 
     let checkRejected = function(_value){
       if(typeof onRejected !== 'function'){ 
         nextRejected(_value);
+      }else{
+        //如果个promise 就放进队列
       }
     }
 
