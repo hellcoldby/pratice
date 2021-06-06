@@ -3,7 +3,7 @@
  * @Author: ygp
  * @Date: 2021-05-25 23:35:53
  * @LastEditors: ygp
- * @LastEditTime: 2021-06-07 06:38:10
+ * @LastEditTime: 2021-06-07 07:44:08
  */
 
 
@@ -28,19 +28,42 @@ MyPromise.prototype.then = function(onFulfilled, onRejected){
   return new MyPromise((nextResolve, nextRejected) => {
 
     let checkFulfilled = function(_value){
-      //如果不是函数,继续传递_value
-      if(typeof onFulfilled !== 'function'){ 
-         nextResolve(_value);
-      }else{
-        //如果个promise 就放进队列
+
+      try{
+
+        //如果不是函数,继续传递_value
+        if(typeof onFulfilled !== 'function'){ 
+           nextResolve(_value);
+        }else{
+          //如果个promise 就放进队列
+          const res = onFulfilled(_value);
+          if(res instanceof MyPromise){
+            res.then(nextResolve, nextRejected);
+          }else{
+            nextResolve(res);
+          }
+        }
+      }catch(err){
+        onRejected(err);
       }
     }
 
     let checkRejected = function(_value){
-      if(typeof onRejected !== 'function'){ 
-        nextRejected(_value);
-      }else{
-        //如果个promise 就放进队列
+      try{
+
+        if(typeof onRejected !== 'function'){ 
+          nextRejected(_value);
+        }else{
+          //如果个promise 就放进队列
+          const res = nextResolve(_value);
+          if(res instanceof MyPromise){
+            res.then(nextResolve, nextRejected);
+          }else{
+            nextRejected(res);
+          }
+        }
+      }catch(err){
+        onRejected(err);
       }
     }
 
@@ -64,11 +87,10 @@ MyPromise.prototype.then = function(onFulfilled, onRejected){
 
 new MyPromise((res, rej) =>{
   res('ok');
-}).then(res => {
-  console.log(res);
-}).then(res =>{
+}).then(res=>{
   console.log(res);
 })
+
 
 
 
