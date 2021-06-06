@@ -3,7 +3,7 @@
  * @Author: ygp
  * @Date: 2021-05-25 23:35:53
  * @LastEditors: ygp
- * @LastEditTime: 2021-05-28 01:47:47
+ * @LastEditTime: 2021-06-07 06:38:10
  */
 
 
@@ -66,8 +66,9 @@ new MyPromise((res, rej) =>{
   res('ok');
 }).then(res => {
   console.log(res);
+}).then(res =>{
+  console.log(res);
 })
-
 
 
 
