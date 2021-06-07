@@ -16,13 +16,57 @@ function MyPromise(fn){
 }
 
 MyPromise.prototype.resolve = function(val){
-  this.status = 'fulfilled'; //完成
-  this.value = val;
+  const run = ()=>{
+      if(this.status !== 'pending') return;
+
+      this.status = 'fulfilled'; 
+      const runSuccess = (val)=>{
+        let cb;
+        while(cb = this._fulfilledQueues.shift()){
+          cb(val)
+        }
+      }
+
+      const runErr = (err)=>{
+        let cb;
+        while(cb = this._rejectedQueues.shift()){
+          cb(err)
+        }
+      }
+
+      //如果val 是promise对象，需要先执行promise，等状态变化后，再执行队列中的promise
+      if(val instanceof MyPromise){
+        val.then(res => {
+          this.value = res;
+          runSuccess(res);
+        }, err=>{
+          this.value = err;
+          runErr(err);
+        })
+      }else{
+        this.value = val;
+        runSuccess(val);
+      }
+  }
+
+  setTimeout(()=> run(), 0);
 };
+
 MyPromise.prototype.reject = function(err){
-  this.status = 'rejected'; //失败
-  this.value = err;
+  if(this.status !== 'pending') return;
+
+  const run =()=>{
+    this.status = 'fulfilled';
+    this.value = err;
+    let cb;
+    while(cb = this._rejectedQueues.shift()){
+      cb(err);
+    }
+  }
+
+  setTimeout(()=> run(), 0);
 };
+
 MyPromise.prototype.then = function(onFulfilled, onRejected){
 
   const {value:_value, status:_status} = this;
@@ -69,9 +113,10 @@ MyPromise.prototype.then = function(onFulfilled, onRejected){
       }
     }
 
-
     switch(this.status){
       case 'pending':
+        this._fulfilledQueues.push(onFulfilled);
+        this._rejectedQueues.push(onRejected);
         break;
       case 'fulfilled':
           //判断onFulfilled的类型
@@ -86,6 +131,58 @@ MyPromise.prototype.then = function(onFulfilled, onRejected){
   
 }
 
+MyPromise.prototype.catch = function(onRejected){
+  return this.then(undefined, onRejected);
+}
+
+MyPromise.resolve = function(value){
+  if(value instanceof MyPromise) return value;
+  return new MyPromise(resolve => resolve(value));
+}
+
+MyPromise.reject = function(value){
+  return new MyPromise((resolve, rejected)=> rejected(value));
+}
+
+MyPromise.all = function(list){
+  return new MyPromise((resolve, reject) => {
+    // 返回值的集合
+    let values = [];
+    let count = 0;
+    for(let [i, p] of list.entries()){
+      //如果参数不是MyPromise 实例，先调用MyPromise.resolve
+      this.resolve(p).then(res => {
+        values[i] = res;
+        count++;
+        if(count === list.length) resolve(values);
+      }, err =>{
+        reject(err);
+      })
+    }
+  })
+}
+
+
+//只要有一个实例改变状态，新的promise就跟着改变
+MyPromise.race = function(list) {
+  return new MyPromise((resolve, reject) => {
+    for(let p of list){
+      this.resolve(p).then(res=>{
+        resolve(res);
+      },err=>{
+        reject(err);
+      })
+    }
+  })
+}
+
+//不管MyPromise 状态如何，都会执行的操作
+MyPromise.finally = function(cb){
+  return this.then(
+    value => MyPromise.resolve(cb()).then(()=> value),
+    reason => MyPromise.resolve(cb()).then(()=> { throw reason })
+  )
+}
 
 new MyPromise((res, rej) =>{
   res('ok');
