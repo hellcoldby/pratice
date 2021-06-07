@@ -3,7 +3,7 @@
  * @Author: ygp
  * @Date: 2021-05-25 23:35:53
  * @LastEditors: ygp
- * @LastEditTime: 2021-06-07 07:44:08
+ * @LastEditTime: 2021-06-07 08:26:57
  */
 
 
@@ -11,6 +11,8 @@ function MyPromise(fn){
     this.value = null;
     this.status = 'pending'; //等待中。。。
     fn(this.resolve.bind(this), this.reject.bind(this));
+    this._fulfilledQueues = []
+    this._rejectedQueues = []
 }
 
 MyPromise.prototype.resolve = function(val){
