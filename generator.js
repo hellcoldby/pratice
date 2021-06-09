@@ -159,5 +159,30 @@ g.return('foo'); // {value: 'foo', done: true} --- 终止遍历
 g.next(); // {value: undefined, done: true}
 
 
-//如果 return 方法不提供参数
+//如果 return 方法不提供参数 则返回值的value属性为undefined
+g.return(); // {value: undefined, done: true}
 
+
+//如果 Generator 函数内部有try...finally代码块，且正在执行try代码块，
+//那么return()方法会导致立刻进入finally代码块
+function* numbers(){
+    yield 1;
+    try{
+        yield 2;
+        yield 3;
+    }finally{
+        yield 4;
+        yield 5;
+    }
+    yield 6;
+}
+
+const n = numbers();
+n.next(); // { value: 1, done: false }
+n.next(); // { value: 2, done: false }
+n.return(7); // { value: 4, done: false }
+n.next(); // { value: 5, done: false }
+n.next(); // { value: 7, done: true } --- 最后返回 return 里的参数
+
+//调用return()方法后，就开始执行finally代码块，不执行try里面剩下的代码了，
+//然后等到finally代码块执行完，再返回return()方法指定的返回值。
