@@ -186,3 +186,38 @@ n.next(); // { value: 7, done: true } --- 最后返回 return 里的参数
 
 //调用return()方法后，就开始执行finally代码块，不执行try里面剩下的代码了，
 //然后等到finally代码块执行完，再返回return()方法指定的返回值。
+
+
+
+
+
+
+// next()、throw()、return()这三个方法本质上是同一件事，可以放在一起理解。
+//next()是将yield表达式替换成一个值。
+//throw()是将yield表达式替换成一个throw语句。
+//return()是将yield表达式替换成一个return语句。
+
+
+//generator 嵌套
+// generator 内如的 generator 需要手动遍历
+
+function* bar() {
+    yield 'x';
+    for (let v of foo()) {
+      yield v;
+    }
+    yield 'y';
+  }
+  
+  for (let v of bar()){
+    console.log(v);
+  }
+
+// yield*
+// yield*  表达式
+// es6 提供了 yield* 表达式，用来执行另一个函数 (就不用手动遍历了)
+function* bar() {
+    yield 'x';
+    yield* foo();
+    yield 'y';
+  }
