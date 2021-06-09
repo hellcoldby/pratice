@@ -109,3 +109,55 @@ b.next() // { value:6, done:false }  第一次调用b的 next 方法 返回yield
 b.next(12) // { value:8, done:false } 第二次调用，将上一次yield 改为--> 12, 上一次y= 2 * 12，这次的  yield --->24/3
 b.next(13) // { value:42, done:true } z = yield 13,  5 + 24 +13 = 42
 //注意： next参数表示上一个yield 表达式的返回值，所以第一次传递参数是无效的。
+
+
+
+
+
+
+
+
+//throw: 在函数体外抛出错误，在函数体内捕获
+let err = function* (){
+    try{
+        yield;
+    }catch(e){
+        console.log('内部捕获', e);
+    }
+}
+
+let e = err();
+e.next(); // 至少要执行一次 next
+try{
+    e.throw('a');  //函数体外抛出错误 --- 内部捕获
+    e.throw('b'); // 函数体外抛出错误 --- 函数体内已经捕获完毕，所以 外部捕获
+}catch(error){
+    console.log('外部捕获', error);
+}
+
+//如果函数体内部 没有try...catch 代码块，那么throw 方法抛出的错误，将被
+// 外部的 try...catch 代码块捕获
+// 如果函数内部和外部 都没有部署 try...catch 代码块，程序将报错，直接终端执行
+
+//也可以直接抛出Error 对象的实例
+e.next()  // 至少要执行一次 next
+e.throw(new Error('出错了！'));
+
+
+
+
+//return : 返回给定的值，并且终结遍历 Generator 函数
+function* gen(){
+    yield 1;
+    yield 2;
+    yield 3;
+}
+
+let g = gen();
+g.next();  // {value: 1, done: false}
+g.return('foo'); // {value: 'foo', done: true} --- 终止遍历
+g.next(); // {value: undefined, done: true}
+
+
+//如果 return 方法不提供参数
+
