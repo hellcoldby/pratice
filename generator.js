@@ -221,3 +221,28 @@ function* bar() {
     yield* foo();
     yield 'y';
   }
+// yield* 后边跟一个数组 返回数组的遍历器对象
+function* gen(){
+    yield* ["a", "b", "c"];
+  }
+  
+// 实际上，任何数据结构只要有 Iterator 接口，就可以被yield*遍历
+gen().next() // { value:"a", done:false } 
+
+
+
+
+
+//generator 作为对象属性
+let obj = {
+    * myGeneratorMethod() {
+      
+    }
+  }
+//等价
+  let obj = {
+    myGeneratorMethod: function* () {
+      // ···
+    }
+  };
+
