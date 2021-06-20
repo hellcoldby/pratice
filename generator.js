@@ -111,10 +111,6 @@ b.next(13) // { value:42, done:true } z = yield 13,  5 + 24 +13 = 42
 
 
 
-
-
-
-
 //throw: 在函数体外抛出错误，在函数体内捕获
 let err = function* (){
     try{
@@ -219,3 +215,131 @@ function* bar() {
     yield* foo();
     yield 'y';
   }
+// yield* 后边跟一个数组 返回数组的遍历器对象
+function* gen(){
+    yield* ["a", "b", "c"];
+  }
+  
+// 实际上，任何数据结构只要有 Iterator 接口，就可以被yield*遍历
+gen().next() // { value:"a", done:false } 
+
+
+
+
+
+//generator 作为对象属性
+let obj = {
+    * myGeneratorMethod() {
+      
+    }
+  }
+//等价
+  let obj = {
+    myGeneratorMethod: function* () {
+      // ···
+    }
+  };
+
+
+
+
+
+
+
+
+
+const { fstat } = require('fs');
+  /**==================generator 异步应用==================================== */
+
+  //异步请求数据
+  let fetch = require('node-fetch');
+  function* gen(){
+    let url = 'http://api.github.com/user/github';
+    let result = yield fetch(url);
+    console.log(result.bio);
+  }
+
+  //获取数据
+  let g = gen();
+  let result = g.next();
+  //处理数据
+  result.value.then(function(data){
+    return data.json();
+  }).then(function(data){
+    g.next(data);
+  })
+
+
+
+
+
+
+
+//Thunk 函数 : 自动执行 Generator 函数的一种方法
+/**
+ * thunk -- 直译：数据转换
+ * 函数参数的 “求职策略”
+ * 函数的参数 该何时求值
+ * 
+ * 
+ */
+
+let x = 1;
+function f(m){ return m * 2 };
+
+f(x + 5);
+
+//1. 传值调用，在进入函数体之前先 计算 x+5 = 6; c语言就是采用这种策略
+// 传值调用先计算
+//2. 传名调用，将x+5 传入函数体，用到它的时候再求值； Haskell 就是这种策略  （x+5) * 2
+
+//Thunk函数的实现----- 采用2. 传名调用的方式
+
+const thunk = function(){ return x + 5; };
+function f(thunk) {
+  return thunk() * 2;
+}
+
+
+/**
+ * JS 中采用的是传值调用，和Thunk含义有所不同。
+ */
+//例如：
+//多参数版本 
+ fs.readFile(fileName, callback);
+
+ //单参数版本
+ const Thunk = function(fileName) {
+   return function (callback) {
+     return fs.readFile(fileName, callback);
+   }
+ }
+
+ //Thunk 就是
+ const rThunk = Thunk(fileName);
+ rThunk(callback);
+
+
+ // 任何函数，只要参数有回调函数，就能写成Thunk 函数的形式。 
+ //Thunk 函数转换器
+ const Thunk = function(fn) {
+   return function () {
+     const args = Array.prototype.slice.call(arguments);
+     return function (callback) {
+       args.push(callback);
+       return fn.apply(this, args);
+     }
+   }
+ }
+
+ //es6 版本
+ const Thunk = function(fn){
+   return function(...args){
+     return function(callback) {
+       return fn.call(this, ...args, callback);
+     }
+   }
+ }
+
+
+ //co 模块自动执行generator 的thunk 模块
