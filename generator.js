@@ -2,7 +2,6 @@
 // 1. function 关键字与函数之间有个星号
 // 2. 函数内部使用yield 表达式 （yield 的意思是 产出）
 
-const createLogger = require("yeoman-environment/lib/util/log");
 
 
 //定义：
@@ -28,13 +27,12 @@ hw.next(); // {value: undefined, done: true} 没有return 输出undefined
 //es6没有规定 function * -- 星号写在那个位置所以  以下四种都可以
 function * foo(){}
 function *foo(){}
-function* foo(){}
+function* foo(){} // 默认用这种
 function*foo(){}
 
 
 
 //yield 暂停：
-
 //函数内不使用 yield, 这时就是一个单纯的暂缓执行函数
 function* gen(){
     console.log('执行了');
