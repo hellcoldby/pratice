@@ -3,7 +3,7 @@
  * @Author: ygp
  * @Date: 2021-04-05 00:26:37
  * @LastEditors: ygp
- * @LastEditTime: 2021-04-05 01:30:19
+ * @LastEditTime: 2021-06-21 00:51:54
  */
 
 /**
@@ -60,12 +60,12 @@ function curry5_1 (fn){
 function curry6(fn){
     
     //记录参数的个数
-    let args = [].slice.call(arguments,1);
+    let args = [];
     function generate(){
         //合并每次传递来的参数
-        args = [...args, ...arguments];
+        args = [ ...arguments];
         if(args.length >= fn.length){
-           return fn.apply(...args);
+           return fn.apply(this, ...args);
         }else{
             return generate;
         }
