@@ -134,6 +134,10 @@ f().then(v => console.log(v)) //123
 
 
 
+
+
+
+
 /**
  * 第二个await语句是不会执行的，因为第一个await语句状态变成了reject。
  */
@@ -143,9 +147,11 @@ f().then(v => console.log(v)) //123
   await Promise.resolve('hello world'); // 不会执行
 }
 
+//await命令后面的Promise对象，运行结果可能是rejected，所以最好把await命令放在try...catch代码块中。
+
 /**
  * 我们希望即使前一个异步操作失败，也不要中断后面的异步操作
- * 第一个await放在try...catch结构里面，这样不管这个异步操作是否成功，第二个await都会执行。
+ * 1.第一个await放在try...catch结构里面，这样不管这个异步操作是否成功，第二个await都会执行。
  */
 
  async function f() {
@@ -160,9 +166,8 @@ f()
 .then(v => console.log(v))
 // hello world
 
-/**
- * 另一种方法是await后面的 Promise 对象再跟一个catch方法，处理前面可能出现的错误。
- */
+// 2.另一种方法是await后面的 Promise 对象再跟一个catch方法，处理前面可能出现的错误。
+
  async function f() {
   await Promise.reject('出错了')
     .catch(e => console.log(e));
@@ -173,3 +178,40 @@ f()
 .then(v => console.log(v))
 // 出错了
 // hello world
+
+
+
+
+
+
+
+
+
+
+
+//使用try...catch结构，实现多次重复尝试
+//上面代码中，如果await操作成功，就会使用break语句退出循环；如果失败，会被catch语句捕捉，然后进入下一轮循环。
+const superagent = require('superagent');
+const NUM_RETRIES = 3;
+
+async function test() {
+  let i;
+  for (i = 0; i < NUM_RETRIES; ++i) {
+    try {
+      await superagent.get('http://google.com/this-throws-an-error');
+      break;
+    } catch(err) {}
+  }
+  console.log(i); // 3
+}
+
+test();
+
+
+// 多个await 同时触发
+let foo = await getFoo();
+let bar = await getBar();
+
+//改写成：
+let [foo, bar] = await Promise.all([getFoo(), getBar()]);
+
