@@ -3,13 +3,11 @@
  * @Author: ygp
  * @Date: 2021-07-24 22:21:31
  * @LastEditors: ygp
- * @LastEditTime: 2021-07-24 22:47:30
+ * @LastEditTime: 2021-07-25 21:59:48
  */
 import Home from './Home.js' ;
 import About from './about.js';
 const NotFound = { template: '<p>Page not found</p>' }
-
-
 
 const routes = [
     { path: '/', component: Home },

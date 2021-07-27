@@ -1,0 +1,25 @@
+{
+  "name": "pratice",
+  "version": "1.0.0",
+  "description": "test",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hellcoldby/pratice.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hellcoldby/pratice/issues"
+  },
+  "homepage": "https://github.com/hellcoldby/pratice#readme",
+  "devDependencies": {
+    "koa": "^2.13.1"
+  }
+}
