@@ -29,3 +29,14 @@ new Promise(resolve => {
 }).then(function(){
     console.log('promise2');
 })
+
+
+/**
+ * 
+    async2 end
+    promise
+    async1 end
+    promise1
+    promise2
+    setTimeout
+ */

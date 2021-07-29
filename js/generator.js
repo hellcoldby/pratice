@@ -5,7 +5,7 @@
 
 
 //定义：
-function* ok(){  //这个函数有三个状态 hello  world  和 return
+function* ok(){  //这个函数有三个状态 hello  world  和 ending
    yield 'hello';
    yield 'world';
    return 'ending';
