@@ -108,11 +108,11 @@ let difference = new Set([...a].filter(x => !b.has(x)));
 
 //改变原来的set结构
 // 方法一
-let set = new Set([1, 2, 3]);
-set = new Set([...set].map(val => val * 2));
+let set5 = new Set([1, 2, 3]);
+set5 = new Set([...set5].map(val => val * 2));
 // set的值是2, 4, 6
 
 // 方法二
-let set = new Set([1, 2, 3]);
-set = new Set(Array.from(set, val => val * 2));
+let set6 = new Set([1, 2, 3]);
+set6 = new Set(Array.from(set6, val => val * 2));
 // set的值是2, 4, 6
