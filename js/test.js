@@ -1,10 +1,4 @@
-/*
- * @Description: 
- * @Author: ygp
- * @Date: 2021-05-25 23:35:53
- * @LastEditors: ygp
- * @LastEditTime: 2021-06-14 22:10:35
- */
+
 function MyPromise(fn){
     this.value = null;
     this.status = 'pending'; //等待中。。。

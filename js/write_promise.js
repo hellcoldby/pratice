@@ -1,134 +1,192 @@
-/*
- * @Description: promise 解析
- * @Author: ygp
- * @Date: 2021-03-25 16:57:34
- * @LastEditors: ygp
- * @LastEditTime: 2021-03-29 08:27:38
- */
-/**
- * Promise 接收一个函数作为参数
- * function(resolve, reject){} -- 函数有个两个参数（也是函数）
- * resolve() --- 成功时执行
- * reject() --- 失败时执行
- * 
- * Promise的静态方法
- * 1. Promise.resolve() --- 成功时执行
- * 2. Promise.reject() --- 失败时执行
- * 
- * resolve('成功时执行的内容')
- * reject('失败时传递的内容') 
- * 
- * Promise.prototype.then(onFulfilled, onRejected) --- then有两个函数参数
- * onFulfilled(res) --- res代表成功时传递的内容
- * onRejected(err) --- err代表失败时传点的内容   
- * 
- * 
- * 
- * 多个 new Promise(resolve, reject)的返回值 --- p1, p2, p3，
- * 1.全部异步执行 --- Promise.all(p1,p2,p3)
- * 2.执行最快的结果（不看最终结果）--- Promise.race(p1,p2,p3);
- * 
- * 
- * 
- * 
- * p1 = new Promise(....);
- * p1.then() ---- 没有参数 --- p2.then(res)会接收p1的res
- * p1.then(res=> 'xxx') --- p2.then(r)--参数就是xxx
- * p1.then(res=> new Promise(...)) --- p2.then()会等p1.then()里边的执行完成
- * 
- * p1.then()--- 抛出错误，p2.then()也抛出错误
- * 
- */
-// 第一版代码
-function Promise(fn){
-    
-    this._value = undefined;
-    this._statues = 'PENDING';
 
-    try{
-        fn(this._resolve.bind(this), this._reject.bind(this))
-    }catch(err){
-        this._reject(err);
-    }
-
-    this._resolve = function(val){
-        if(this._statues !== 'PENDING') return;
-        const run = () => {
-           this._statues = 'FULFILLED';
-           this._value = val;
-           let cb;
-           while (cb = this._fulfilledQueues.shift()){
-               cb(val);
-           }
-       }
-       setTimeout(()=>run(), 0);
-    }
-    this._reject = function(err){
-        if(this._statues !== 'PENDING') return;
-        const run =() =>{
-            this._statues = 'REJECTED';
-            this._value = err;
-            let cb;
-            while(cb = this._rejectedQueues.shift()){
-                cb(err);
-            }
-        }
-
-        setTimeout(()=>run(), 0);
-    }
-
-    this._fulfilledQueues = [];
-    this._rejectedQueues = [];
-
+function MyPromise(fn){
+    this.value = null;
+    this.status = 'pending'; //等待中。。。
+    fn(this.resolve.bind(this), this.reject.bind(this));
+    this._fulfilledQueues = []
+    this._rejectedQueues = []
 }
 
-Promise.prototype.then = function(onFulfilled, onRejected){
-    const {_value} = this;
-    return new Promise(function(resolve, reject){
+MyPromise.prototype.resolve = function(val){
+  const run = ()=>{
+      if(this.status !== 'pending') return;
 
-        //准备成功执行 
-        function await_resolve (value){
-            if(onFulfilled !== 'function'){
-                resolve(value)
-            }else{
-                let res = onFulfilled(value);
-                if(res instanceof Promise){
-                    res.then(resolve, reject);
-                }else{
-                    resolve(res);
-                }
-            }
+      this.status = 'fulfilled'; 
+      const runSuccess = (val)=>{
+        let cb;
+        while(cb = this._fulfilledQueues.shift()){
+          cb(val)
         }
-        //准备失败执行
-        function await_reject(error){
-            if(typeof onRejected !== 'function'){
-                reject(err);
-            }else{
-                let res = onRejected(error);
-                if(res instanceof Promise){
-                    res.then(resolve, reject);
-                }else{
-                    reject(res)
-                }
-            }
-        }
+      }
 
-        switch(_statues){
-            case 'PENDING':
-                this._fulfilledQueues.push(await_resolve);
-                this._rejectedQueues.push(await_reject);
-                break;
-            case 'FULFILLED':
-                await_resolve(_value);
-                break;
-            case 'REJECTED':
-                await_reject(_value);
-                break;
+      const runErr = (err)=>{
+        let cb;
+        while(cb = this._rejectedQueues.shift()){
+          cb(err)
         }
-        
-    })
+      }
+
+      //如果val 是promise对象，需要先执行promise，等状态变化后，再执行队列中的promise
+      if(val instanceof MyPromise){
+        val.then(res => {
+          this.value = res;
+          runSuccess(res);
+        }, err=>{
+          this.value = err;
+          runErr(err);
+        })
+      }else{
+        this.value = val;
+        runSuccess(val);
+      }
+  }
+
+  setTimeout(()=> run(), 0);
+};
+
+MyPromise.prototype.reject = function(err){
+  if(this.status !== 'pending') return;
+
+  const run =()=>{
+    this.status = 'fulfilled';
+    this.value = err;
+    let cb;
+    while(cb = this._rejectedQueues.shift()){
+      cb(err);
+    }
+  }
+
+  setTimeout(()=> run(), 0);
+};
+
+MyPromise.prototype.then = function(onFulfilled, onRejected){
+
+  const {value:_value, status:_status} = this;
+
+  return new MyPromise((nextResolve, nextRejected) => {
+
+    let checkFulfilled = function(_value){
+
+      try{
+
+        //如果不是函数,继续传递_value
+        if(typeof onFulfilled !== 'function'){ 
+           nextResolve(_value);
+        }else{
+          //如果个promise 就放进队列
+          const res = onFulfilled(_value);
+          if(res instanceof MyPromise){
+            res.then(nextResolve, nextRejected);
+          }else{
+            nextResolve(res);
+          }
+        }
+      }catch(err){
+        onRejected(err);
+      }
+    }
+
+    let checkRejected = function(_value){
+      try{
+
+        if(typeof onRejected !== 'function'){ 
+          nextRejected(_value);
+        }else{
+          //如果个promise 就放进队列
+          const res = nextResolve(_value);
+          if(res instanceof MyPromise){
+            res.then(nextResolve, nextRejected);
+          }else{
+            nextRejected(res);
+          }
+        }
+      }catch(err){
+        onRejected(err);
+      }
+    }
+
+    switch(this.status){
+      case 'pending':
+        this._fulfilledQueues.push(onFulfilled);
+        this._rejectedQueues.push(onRejected);
+        break;
+      case 'fulfilled':
+          //判断onFulfilled的类型
+          checkFulfilled(_value);
+        break;
+      case 'rejected':
+          //判断onRejected的类型
+          checkRejected(_value);
+        break;
+    }
+  });
+  
 }
 
-Promise.prototype.catch = function(){
-
+MyPromise.prototype.catch = function(onRejected){
+  return this.then(undefined, onRejected);
 }
+
+MyPromise.resolve = function(value){
+  if(value instanceof MyPromise) return value;
+  return new MyPromise(resolve => resolve(value));
+}
+
+MyPromise.reject = function(value){
+  return new MyPromise((resolve, rejected)=> rejected(value));
+}
+
+MyPromise.all = function(list){
+  return new MyPromise((resolve, reject) => {
+    // 返回值的集合
+    let values = [];
+    let count = 0;
+    for(let [i, p] of list.entries()){
+      //如果参数不是MyPromise 实例，先调用MyPromise.resolve
+      this.resolve(p).then(res => {
+        values[i] = res;
+        count++;
+        if(count === list.length) resolve(values);
+      }, err =>{
+        reject(err);
+      })
+    }
+  })
+}
+
+
+//只要有一个实例改变状态，新的promise就跟着改变
+MyPromise.race = function(list) {
+  return new MyPromise((resolve, reject) => {
+    for(let p of list){
+      this.resolve(p).then(res=>{
+        resolve(res);
+      },err=>{
+        reject(err);
+      })
+    }
+  })
+}
+
+//不管MyPromise 状态如何，都会执行的操作
+MyPromise.finally = function(cb){
+  return this.then(
+    value => MyPromise.resolve(cb()).then(()=> value),
+    reason => MyPromise.resolve(cb()).then(()=> { throw reason })
+  )
+}
+
+new MyPromise((res, rej) =>{
+  res('ok');
+}).then(res=>{
+  console.log(res);
+})
+
+
+
+
+
+
+
+
+
