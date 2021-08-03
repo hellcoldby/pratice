@@ -89,7 +89,7 @@ class MyPromise {
       if(this.state === 'pending'){
         this.state = 'fulfilled';
         this.value = value;
-        console.log('ok',this.onFulfilled_ary, this.value);
+        // console.log('ok',this.onFulfilled_ary, this.value);
         this.onFulfilled_ary.forEach(fn=>fn());
       }
     }
@@ -98,7 +98,7 @@ class MyPromise {
       if(this.state === 'pending'){
         this.state = 'rejected';
         this.reason = reason;
-        console.log(this.onRejected_ary);
+        // console.log(this.onRejected_ary);
         this.onRejected_ary.forEach(fn=>fn());
       }
     }
@@ -118,19 +118,19 @@ class MyPromise {
     let promise2 = new MyPromise((resolve, reject) => {
 
       if (this.state === 'pending') {
-        setTimeout(()=>{
-          this.onFulfilled_ary.push(() => {
-            let x = onFulfilled(this.value);
-            resolvePromise(promise2, x, resolve, reject)
+        this.onFulfilled_ary.push(() => {
+            setTimeout(()=>{
+              let x = onFulfilled(this.value);
+              resolvePromise(promise2, x, resolve, reject)
+            }, 0);
           });
-        }, 0);
 
-        setTimeout(()=>{
           this.onRejected_ary.push(() => {
-            let x = onRejected(this.reason);
-            resolvePromise(promise2, x, resolve, reject)
+            setTimeout(()=>{
+              let x = onRejected(this.reason);
+              resolvePromise(promise2, x, resolve, reject)
+            },0);
           })
-        },0);
 
       }
 
@@ -161,8 +161,6 @@ class MyPromise {
 
     return promise2;
   }
-
-
 }
 
 
