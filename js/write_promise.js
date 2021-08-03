@@ -18,56 +18,8 @@
  *    then 可以被多次调用
  */
  
-  // const rP = new Promise(resolve=>{
-  //   resolve('real');
-  // });
-  // rP.then(res=>{console.log(res);});
-  // rP.then(res=> {console.log(res);})
 
 
-  class MyPromise{
-    constructor(fn){
-      this.state = 'pending'; //状态
-      this.value = undefined; //最终值
-
-      const resolve = value =>{
-        this.state = 'fulfilled';
-        this.value = value;
-      };
-
-      const rejected = reason =>{
-        this.state = 'rejected';
-        this.value = reason;
-      };
-
-      try{
-        fn(resolve, rejected);
-      }catch(err){
-        rejected(err)
-      }
-    }
-
-    then(onFulfilled, onRejected){
-       if(this.state === 'fulfilled'){
-         onFulfilled(this.value);
-       }
-
-       if(this.state === 'rejected'){
-         onRejected(this.value)
-       }
-    }
-  }
-
-  const p = new MyPromise(resolve=>{
-    setTimeout(()=>{
-      resolve('hahaha');
-    },1000)
-    
-  })
-  
-  p.then(res=>{
-    console.log(res);
-  });
 // 我们已经实现了前3个标准， 热庵后加入异步的定时器，发现then 回调没有任何反应
 
   /**
@@ -75,72 +27,16 @@
    *    我们需要把then 方法的回调保存起来，等 resolve() 执行的时候，再调用
    */
 
-   class MyPromise1{
-    constructor(fn){
-      this.state = 'pending'; //状态
-      this.value = undefined; //最终值
-      this.onFulfilled_ary = []; //成功时的队列
-      this.onRejected_ary = []; //失败时的队列
-
-      const resolve = value =>{
-        this.state = 'fulfilled';
-        this.value = value;
-        //依次执行队列
-        this.onFulfilled_ary.forEach(fn=> fn());
-      };
-
-      const rejected = reason =>{
-        this.state = 'rejected';
-        this.value = reason;
-        //依次执行队列
-        this.onRejected_ary.forEach(fn=>fn());
-      };
-
-      try{
-        fn(resolve, rejected);
-      }catch(err){
-        rejected(err)
-      }
-    }
-
-    then(onFulfilled, onRejected){
-       if(this.state === 'fulfilled'){
-         onFulfilled(this.value);
-       }
-
-       if(this.state === 'rejected'){
-         onRejected(this.value)
-       }
-
-       if(this.state === 'pending'){
-          this.onFulfilled_ary.push(()=>{
-            onFulfilled(this.value);
-          });
-          this.onRejected_ary.push(()=>{
-            onRejected(this.value);
-          })
-       }
-    }
-  }
-  //测试 异步 成功
-  const p1 = new MyPromise1(resolve=>{
-    setTimeout(()=>{
-      resolve('hahaha');
-    },1000)
-  })
-  
-  p1.then(res=>{
-    console.log('p1',res);
-  });
  
   // promise 的优势在于链式调用 promise().then().then()
   /**
-   *  5. promise 可以 then 多次， 每次都返回一个新的 promise
+   *  5. promise 可以 then 多次， 需要每次都返回一个新的 promise
    *  
-   *  a. 如果then 的两个参数不是函数，后边的then依旧能获取 promise() 执行成功的值
+   *  a. 首先如果then 的两个参数都不是函数，忽略，后边的then依旧能获取 promise() 执行成功的值
    * 
    *  b. 如果then 的返回值 x 是一个普通值，就把这个结果作为参数，传入到下一个then 成功的回调中
    *  c. 如果then 抛出异常，就把这个异常作为参数，传递给下一个then的失败回调中
+   * 
    *  d. 如果then 返回值 x 是一个promise, 那会等 promise 执行完 --- 执行成功走下一个then的成功
    *  执行失败走下一个then的失败函数
    *  
@@ -165,34 +61,76 @@
           this.value = value;
         }
 
-        const rejected = reason =>{
+        const reject = reason =>{
           this.state = 'rejected';
           this.reason = reason;
         }
 
         try{
-          fn(resolve, rejected);
+          fn(resolve, reject);
         }catch(err){
-            rejected(err)
+            reject(err)
         }
       }
 
       then(onFulfilled, onRejected) {
-        if(this.state === 'pending'){
-          this.onFulfilled_ary.push(()=>{
-            onFulfilled(this.value);
-          });
-          this.onRejected_ary.push(()=>{
-            onRejected(this.reason);
-          })
-        }
 
-        if(this.state === 'fulfilled'){
-          onFulfilled(this.value)
-        }
+        //1. then 返回的必须是个新的promise 才能链式调用
+        //1.2 在新的promise内部，处理 onFulfilled 返回值x
 
-        if(this.state === 'rejected'){
-          onRejected(this.reason)
-        }
+        //2. 需要一个函数来处理 返回值x 的逻辑
+
+
+        const promise2 = new MyPromise((resolve, reject)=>{
+
+          if(this.state === 'pending'){
+
+            this.onFulfilled_ary.push(()=>{
+              let x = onFulfilled(this.value);
+              resolvePromise(promise2, x, resolve, reject)
+            });
+
+            this.onRejected_ary.push(()=>{
+              let x = onRejected(this.reason);
+              resolvePromise(promise2, x, resolve, reject)
+            })
+          }
+  
+          if(this.state === 'fulfilled'){
+             let x = onFulfilled(this.value)
+             resolvePromise(promise2, x, resolve, reject)
+          }
+  
+          if(this.state === 'rejected'){
+            let x = onRejected(this.reason);
+            resolvePromise(promise2, x, resolve, reject)
+          }
+        });
+        return promise2;
       }
+
+      //2. 处理返回值x的逻辑
+      resolvePromise(promise2, x, resolve, reject){
+        //2.1 判断 返回值x 存不存在， 是不是promise
+        //    - 是： 
+        //    - 不是： 作为新promise 执行成功 或失败的结果
+        if(x != null && (typeof x === 'object') || typeof x === 'function'){
+
+        }else{
+          resolve (x);
+        }
+        
+      }
+
     }
+
+
+    const rp = new Promise(resolve=>{
+      resolve('abc')
+    });
+    rp.then(res=>{
+      // return function (){console.log(234);}
+      return {a:1}
+    }).then(res=>{
+      console.log(res);
+    })
