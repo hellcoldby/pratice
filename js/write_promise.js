@@ -86,13 +86,21 @@ class MyPromise {
     this.onRejected_ary = [];
 
     const resolve = value => {
-      this.state = 'fulfilled';
-      this.value = value;
+      if(this.state === 'pending'){
+        this.state = 'fulfilled';
+        this.value = value;
+        console.log('ok',this.onFulfilled_ary, this.value);
+        this.onFulfilled_ary.forEach(fn=>fn());
+      }
     }
 
     const reject = reason => {
-      this.state = 'rejected';
-      this.reason = reason;
+      if(this.state === 'pending'){
+        this.state = 'rejected';
+        this.reason = reason;
+        console.log(this.onRejected_ary);
+        this.onRejected_ary.forEach(fn=>fn());
+      }
     }
 
     try {
@@ -103,14 +111,13 @@ class MyPromise {
   }
 
   then(onFulfilled, onRejected) {
+  
     //1. then 返回的必须是个新的promise 才能链式调用
-    //1.2 在新的promise内部，处理 onFulfilled 返回值x
 
     //2. 需要一个函数来处理 返回值x 的逻辑
     let promise2 = new MyPromise((resolve, reject) => {
 
       if (this.state === 'pending') {
-
         setTimeout(()=>{
           this.onFulfilled_ary.push(() => {
             let x = onFulfilled(this.value);
@@ -127,6 +134,7 @@ class MyPromise {
 
       }
 
+      // console.log('then--this.value:',this.value, 'this.state:',this.state);
       if (this.state === 'fulfilled') {
         setTimeout(()=>{
           try{
@@ -153,16 +161,19 @@ class MyPromise {
 
     return promise2;
   }
+
+
 }
 
 
 const rp = new MyPromise(resolve => {
   resolve('abc')
 });
-rp.then(res => {
-  console.log(res);
-  // return function (){console.log(234);}
-  return 123;
-}).then(res => {
+
+const t1= rp.then(res => {
+   return 123;
+});
+
+t1.then(res => {
   console.log(res);
 })
