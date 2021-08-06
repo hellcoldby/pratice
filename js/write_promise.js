@@ -20,7 +20,7 @@
 
 
 
-// 我们已经实现了前3个标准， 热庵后加入异步的定时器，发现then 回调没有任何反应
+// 我们已经实现了前3个标准， 然后resolve加入异步的定时器，发现then 回调没有任何反应
 
 /**
  * 4. 加入异步，then 方法执行的时候, promise的状态还是pending, 所以没反应。
@@ -86,10 +86,11 @@ class MyPromise {
     this.onRejected_ary = [];
 
     const resolve = value => {
+    
       if(this.state === 'pending'){
         this.state = 'fulfilled';
         this.value = value;
-        // console.log('ok',this.onFulfilled_ary, this.value);
+        
         this.onFulfilled_ary.forEach(fn=>fn());
       }
     }
@@ -111,13 +112,10 @@ class MyPromise {
   }
 
   then(onFulfilled, onRejected) {
-  
-    //1. then 返回的必须是个新的promise 才能链式调用
-
-    //2. 需要一个函数来处理 返回值x 的逻辑
     let promise2 = new MyPromise((resolve, reject) => {
 
       if (this.state === 'pending') {
+    
         this.onFulfilled_ary.push(() => {
             setTimeout(()=>{
               let x = onFulfilled(this.value);
@@ -134,7 +132,6 @@ class MyPromise {
 
       }
 
-      // console.log('then--this.value:',this.value, 'this.state:',this.state);
       if (this.state === 'fulfilled') {
         setTimeout(()=>{
           try{
@@ -144,7 +141,7 @@ class MyPromise {
             console.log(err);
             reject(err);
           }
-        },0)
+        },0);
       }
 
       if (this.state === 'rejected') {
@@ -161,17 +158,17 @@ class MyPromise {
 
     return promise2;
   }
-}
+};
 
+const p =new MyPromise(
+  resolve=>{resolve(123)}
+);
 
-const rp = new MyPromise(resolve => {
-  resolve('abc')
-});
-
-const t1= rp.then(res => {
-   return 123;
-});
-
-t1.then(res => {
-  console.log(res);
+const t1 =p.then(res=>{
+  return 'abc'
 })
+
+// t1.then(res=>{
+//   console.log(res);
+// });
+
