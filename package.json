@@ -21,5 +21,8 @@
   "homepage": "https://github.com/hellcoldby/pratice#readme",
   "devDependencies": {
     "koa": "^2.13.1"
+  },
+  "dependencies": {
+    "promises-aplus-tests": "^2.1.2"
   }
 }
