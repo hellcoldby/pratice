@@ -26,3 +26,36 @@ function checkAuth(data) {
     }
   }
   
+  //改写为策略模式  
+  //判断整合
+  const strategies = {
+    checkRole: value => value === 'juejin',
+    checkGrade: value => value >= 1,
+    checkJob: value => value === 'FE',
+    checkType: value=> value === 'eat melons',
+  } 
+
+  //校验
+  class Validator{
+    constructor(){
+      this.checkList = [];
+    }
+
+    add(value, method){
+      this.checkList.push(()=>{
+        strategies[method](value);
+      });
+    }
+
+    check(){
+      for(let i=0; i<this.checkList.length; i++){
+        const item = this.checkList[i];
+        const res = item();
+        if(!res){
+          return false;
+        }
+      }
+      return true;
+    }
+
+  }
