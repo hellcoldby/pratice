@@ -3,10 +3,8 @@ class Promise{
         
         this.value = null;
         this.reason = null;
-
+        
         this.status = 'pending';
-
-
 
         this.resolve = value =>{
             this.status = 'success';
