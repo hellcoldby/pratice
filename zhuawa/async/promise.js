@@ -4,33 +4,38 @@ class Promise{
         this.value = null;
         this.reason = null;
 
-        this.resolve = (value) =>{
+        this.status = 'pending';
+
+
+
+        this.resolve = value =>{
+            this.status = 'success';
             this.value = value;
-        }   
-        this.reject = (reason) =>{
+        }
+
+        this.reject = reason =>{
+            this.status = 'failed';
             this.reason = reason;
         }
+
         fn(this.resolve, this.reject);
     }
 
     then(onFulfilled, onRejected){
-        //需要先判断 onFulfilled 的类型
+        
+        onFulfilled = typeof onFulfilled === 'function'? onFulfilled: v=> v;
 
-        return new Promise((_resolve) =>{
-            const success =  onFulfilled(this.value); // 需要判断 返回值的类型，方便链式调用
-            _resolve(success);
-        });
+        return new Promise((resolve, reject)=>{
+            if(this.status === 'success'){
+               const res =  onFulfilled(this.value);
+               resolve(res)
+            }
 
+            if(this.status === 'failed'){
+                const res = onRejected(this.reason);
+                reject(res);
+            }
+            
+        })
     }
 }
-
-const pr = new Promise(resolve=>{
-    resolve('hello');
-});
-
-pr.then(val => {
-    console.log(val);
-    return 'world'
-}).then(val => {
-    console.log(val);
-})
