@@ -28,5 +28,31 @@ const deleteDuplicates = function(head) {
     return head;
 };
 
-const res = deleteDuplicates(n1)
+// const res = deleteDuplicates(n1)
+// showLink(res);
+
+/**
+ * 删除重复包括自身
+ * 
+ */
+function del(n1){
+    let head = new ListNode();
+    head.next = n1;
+
+    let cur = head;
+    while(cur.next && cur.next.next){
+        if(cur.next.val === cur.next.next.val){
+            let val = cur.next.val;
+            while(cur.next && cur.next.val === val){
+                cur.next = cur.next.next;
+            }
+        }else{
+            cur = cur.next;
+        }
+    }
+
+    return head;
+}
+
+const res = del(n1);
 showLink(res);
