@@ -1,50 +1,21 @@
 /**
- * 两个数组的交集 
+ * 求两个数组的交集
+ *
+ * 思路： 遍历其中一个数组，判断 每个元素有没出现在另一个数组中
  */
 
+const ary1 = [1, 2, 2, 1];
+const ary2 = [2, 2];
 
-/**
- * 思路：
- * 1. 
- */
-
-const ary1 = [1,2,2,1];
-const ary2 = [2,2];
-
-function intersect(num1, num2){
-
-   function getMap(data){
-        let ary = {};
-        for(let i=0; i<data.length; i++){
-            let item = data[i];
-            if(!ary[item]){
-                ary[item] = 1;
-            }else{
-                ary[item] ++;
-            }
+function intersect(ary1, ary2) {
+    let tmp = [];
+    ary1.forEach((item, index) => {
+        if (ary2.indexOf(item) !== -1) {
+            tmp.push(item);
         }
-        return ary;
-   }
-
-   const map1 = getMap(num1);
-   const map2 = getMap(num2);
-
-//    console.log(map1, map2)
-
-
-   let res = [];
-   for(let key in map1){
-       if(map1[key] && map2[key]){
-            const lessCount = Math.min(map1[key], map2[key]);
-            for(let i=0; i<lessCount; i++){
-                res.push(key);
-            }
-       }
-   }
-   
-   return res;
+    });
+    return tmp;
 }
-
 
 const res = intersect(ary1, ary2);
 
