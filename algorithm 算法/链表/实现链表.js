@@ -16,7 +16,7 @@ class LinkList {
     }
 
     // 返回索引对应的元素 --- 查找
-    getElement(index){
+    getElementAt(index){
         if(index<0 || index >= this.length) return null;
 
         let cur = this.head;
@@ -34,7 +34,7 @@ class LinkList {
         if(!this.head){
             this.head = node;
         }else{
-            let cur = this.getElement(this.length -1);
+            let cur = this.getElementAt(this.length -1);
             cur.next = node;
         }
         this.length++;
@@ -42,16 +42,47 @@ class LinkList {
 
     //在指定位置添加节点 --- 插入
     insert(index, element){
+        if(index<0 || index >= this.length) return null;
 
+        let node = new Node(element);
+        if(index === 0){
+            this.head = node;
+        }else{
+            //找到上一个位置
+            let previous = this.getElementAt(index -1);
+            previous.next = node;
+            node.next = previous.next.next;
+        }
     }
 
     // 删除指定位置的元素 --- 删除
     removeAt(index){
+        if(index<0 || index >= this.length) return null;
 
+        let cur = this.head;
+        if(index === 0){
+            this.head = cur.next;
+        }else{
+            let previous = this.getElementAt(index -1);
+
+            let cur = previous.next;
+            previous.next = cur.next;
+        }
+        this.length--;
+
+        //返回删除的元素
+        return cur.element;
     }
 
     //查找指定元素的索引 --- 索引
     indexOf(element){
+        let i=0;
+        while(i < this.length){
+            if(cur.element === element) return i;
+            cur = cur.next;
+            i++;
+        }
 
+        return -1;
     }
 }
