@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "test",
   "private": true,
-  "type": "module",
+
   "directories": {
     "lib": "lib"
   },
@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/hellcoldby/pratice#readme",
   "devDependencies": {
+    "@types/node": "^17.0.8",
     "koa": "^2.13.1",
     "webpack": "^5.65.0",
     "webpack-cli": "^4.9.1"

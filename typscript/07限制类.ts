@@ -17,7 +17,7 @@ class Cat extends Animal {
     constructor(name, age) {
         super(name, age);
         console.log(this.name);
-        console.log(this.age); //❌ 只能在 Animal中访问
+        // console.log(this.age); //❌ 只能在 Animal中访问
     }
 }
 
