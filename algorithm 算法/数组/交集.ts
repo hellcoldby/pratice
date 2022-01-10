@@ -24,3 +24,5 @@ const t2 = ["b"];
 
 const res = intersect(t1, t2);
 console.log(res);
+
+export {};

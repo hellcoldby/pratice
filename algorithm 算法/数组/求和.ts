@@ -17,16 +17,6 @@
 const array: number[] = [2, 7, 11, 15];
 const target: number = 9;
 
-// const twoSum = function (array, target) {
-//     const diff = {};
-//     for (let i = 0; i < array.length; i++) {
-//         diff[array[i]] = i;
-//         if (diff[target - array[i]] !== undefined) {
-//             return [diff[target - array[i]], i];
-//         }
-//     }
-// };
-
 function twoSum(array: number[], target: number) {
     interface diffType {
         [key: number]: number;
