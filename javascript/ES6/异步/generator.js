@@ -37,10 +37,10 @@ function*foo(){}
 function* gen(){
     console.log('执行了');
 }
-const g = gen();
+const g1 = gen();
 
 setTimeout(()=>{
-    g.next();
+    g1.next();
 }, 2000)
 
 
@@ -87,7 +87,7 @@ console.log([...obj])  // [1,2,3]
 
 //generator 返回的就是一个遍历器对象
 function* gen1(){}
-const g = gen1();
+const g2 = gen1();
 g[Symbol.iterator]() === g;  // true;
 
 
@@ -147,10 +147,10 @@ function* gen(){
     yield 3;
 }
 
-let g = gen();
-g.next();  // {value: 1, done: false}
-g.return('foo'); // {value: 'foo', done: true} --- 终止遍历
-g.next(); // {value: undefined, done: true}
+let g3 = gen();
+g3.next();  // {value: 1, done: false}
+g3.return('foo'); // {value: 'foo', done: true} --- 终止遍历
+g3.next(); // {value: undefined, done: true}
 
 
 //如果 return 方法不提供参数 则返回值的value属性为undefined
@@ -309,7 +309,7 @@ function f(thunk) {
  fs.readFile(fileName, callback);
 
  //单参数版本
- const Thunk = function(fileName) {
+ const Thunk1 = function(fileName) {
    return function (callback) {
      return fs.readFile(fileName, callback);
    }
@@ -322,7 +322,7 @@ function f(thunk) {
 
  // 任何函数，只要参数有回调函数，就能写成Thunk 函数的形式。 
  //Thunk 函数转换器
- const Thunk = function(fn) {
+ const Thunk2 = function(fn) {
    return function () {
      const args = Array.prototype.slice.call(arguments);
      return function (callback) {
@@ -333,7 +333,7 @@ function f(thunk) {
  }
 
  //es6 版本
- const Thunk = function(fn){
+ const Thunk3 = function(fn){
    return function(...args){
      return function(callback) {
        return fn.call(this, ...args, callback);
