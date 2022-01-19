@@ -7,15 +7,36 @@
 class LikeButton extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { liked: false };
+    this.state = { count: 0 };
+    this.addCount = this.addCount.bind(this)
+  }
+
+  addCount(){
+    // const sum1 = this.state.count + 1;
+    // const sum2 = this.state.count + 1;
+    // const sum3 = this.state.count + 1;
+
+    const sum1 = this.state.count += 1;
+    const sum2 = this.state.count += 1;
+    const sum3 = this.state.count += 1;
+
+    console.log(sum1, sum2, sum3); // 打印结果 三个都一致才会合并
+
+
+    this.setState({ count: sum1})
+    this.setState({ count: sum2})
+    this.setState({ count: sum3})
+
+   
   }
 
   render() {
-    if (this.state.liked) {
-      return 'You liked this.';
-    }
+    const btn = React.createElement('button', {onClick: this.addCount }, 'linkButton');
+    const sp = React.createElement('span', {},`${this.state.count}`)
 
-    return React.createElement('button', {onClick: () => this.setState({ liked: true }) }, 'linkButton')
+    return React.createElement('div',{}, btn,sp )
+    
+    
   }
 }
 
