@@ -17,7 +17,7 @@ const matchBracket = {
     "{":"}"
 };
 
-function isVaild(str){
+function isValid(str){
     if(!str) return true;
 
     const stack = [];
