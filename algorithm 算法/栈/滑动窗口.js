@@ -36,3 +36,7 @@ const maxSlidingWindow = function (nums, k) {
     // 返回结果数组
     return res;
 };
+
+const nums = [1,1,1,1,1];
+const res = maxSlidingWindow(nums, 3);
+console.log(res);
