@@ -18,8 +18,10 @@
         <!-- 引入babel转换jsx为js -->
         <script src="https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.0.0-beta.3/babel.min.js"></script>
 
-        <!-- <script src="./react.js"></script> -->
-        <script src="./react.jsx" type="text/babel"></script>
-        <script></script>
+        <!-- 导出模块化组件 -->
+        <script type="text/babel" src="./userInfo.js" data-plugins="transform-es2015-modules-umd"></script>
+
+        <!-- 引入模块化组件-->
+        <script src="./react.jsx" type="text/babel" data-plugins="transform-es2015-modules-umd"></script>
     </body>
 </html>

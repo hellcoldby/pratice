@@ -1,1 +1,1 @@
-(()=>{"use strict";(new class{title="a";static cover}).title="The Song of ice and fire"})();
+(()=>{function e(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}class t{constructor(){e(this,"title","a")}test(){console.log(3)}}e(t,"cover",void 0),async function(){await new t}(),Array.from([1,2,3],(e=>e+e))})();
