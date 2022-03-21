@@ -88,7 +88,7 @@ console.log([...obj])  // [1,2,3]
 //generator 返回的就是一个遍历器对象
 function* gen1(){}
 const g2 = gen1();
-g[Symbol.iterator]() === g;  // true;
+g2[Symbol.iterator]() === g2;  // true;
 
 
 
@@ -96,17 +96,17 @@ g[Symbol.iterator]() === g;  // true;
 
 
 // next 参数： 作为上一个yield 表达式的值
-function* foo(x) {
+  function* foo(x) {
     var y = 2 * (yield (x + 1));
     var z = yield (y / 3);
     return (x + y + z);
   }
   
 var b = foo(5);
-b.next() // { value:6, done:false }  第一次调用b的 next 方法 返回yield --> x+1 = 6
-b.next(12) // { value:8, done:false } 第二次调用，将上一次yield 改为--> 12, 上一次y= 2 * 12，这次的  yield --->24/3
-b.next(13) // { value:42, done:true } z = yield 13,  5 + 24 +13 = 42
-//注意： next参数表示上一个yield 表达式的返回值，所以第一次传递参数是无效的。
+
+console.log(b.next()); // next 执行yield()--- 6, 并没有赋值操作
+console.log(b.next(15)); // y赋值为 2 * 15 = 30, yield 结果为30/3 = 10, 
+console.log(b.next(13));//  z赋值为13，  5+30+13 = 48
 
 
 
@@ -239,14 +239,6 @@ let obj = {
       // ···
     }
   };
-
-
-
-
-
-
-
-
 
 const { fstat } = require('fs');
   /**==================generator 异步应用==================================== */
