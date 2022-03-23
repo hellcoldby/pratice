@@ -1,7 +1,11 @@
 import logo from './logo.svg';
 import './App.css';
+import { connect } from 'react-redux';
 
-function App() {
+
+function App(props) {
+
+
   return (
     <div className="App">
       <header className="App-header">
@@ -17,9 +21,25 @@ function App() {
         >
           Learn React
         </a>
+        <div>
+
+        <button onClick={props.add}> ++ </button>
+        <p>{props.getState}</p>
+        <button onClick={props.dec}> -- </button>
+        </div>
       </header>
+      
     </div>
   );
 }
 
-export default App;
+const mapStateToProps =   ((state)=>({
+  getState: state
+}));
+
+const mapDispatchToProps = dispatch =>({
+  add: () => dispatch({ type: 'async_add' }),
+  dec: () => dispatch({ type: 'DECREMENT' })
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(App);

@@ -335,3 +335,16 @@ function f(thunk) {
 
 
  //co 模块自动执行generator 的thunk 模块
+ function co(gen){
+  let it = gen();
+  let res;
+  function next(args){
+    res = it.next(args);
+    if(!res.done){
+      next(res.value)
+    }
+  }
+  next();
+ };
+
+ co(ok)
