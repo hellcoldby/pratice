@@ -4,12 +4,15 @@
     "description": "",
     "main": "sum.js",
     "dependencies": {
+        "axios": "^0.26.1",
         "jest": "^27.5.1"
     },
     "devDependencies": {},
     "scripts": {
-        "test": "jest /temp"
+        "test": "NODE_OPTIONS=--experimental-vm-modules jest /temp"
     },
     "author": "",
-    "license": "ISC"
+    "license": "ISC",
+    "type": "module",
+    "transform": {}
 }
