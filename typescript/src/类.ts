@@ -33,7 +33,7 @@ namespace b{
 }
 
 
-//继承 和 访问修饰符
+
 /**
  * public  自己和自己的子类可以访问
  * protected  自己和自己的子类可以访问，其他类能访问
@@ -77,3 +77,22 @@ namespace c{
     }
 } 
 
+
+namespace d{
+
+    class Animal{
+        constructor(public name:string){
+            this.name = name;
+        }
+    }
+
+    //约束构造函数 使用new 来约束
+    interface withNameClass{
+        new(name: string): Animal;
+    }
+
+    //这里限定参数必须是一个可以 new 的构造函数
+    function createAnimal(cla: withNameClass, name: string){
+        return new cla(name);
+    }
+}    
