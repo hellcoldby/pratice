@@ -60,3 +60,17 @@ namespace c{
 namespace d{
  
 }
+
+namespace e{
+    //泛型的继承约束
+    interface lengthWise{
+        length:number;
+    }
+    function logger<T extends lengthWise>(value: T): T {
+        console.log(value);
+        return value;
+    }
+
+    logger('hello')
+}
+

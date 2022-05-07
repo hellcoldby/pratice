@@ -115,3 +115,5 @@ function sum2(a:string|number, b:string|number):void{
 }
 sum2('d', 'd'); 
 sum2(1,1);
+
+
