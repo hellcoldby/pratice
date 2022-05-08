@@ -62,6 +62,7 @@ namespace e{
 }
 
 namespace f{
+    //必填属性
     interface Person{
         name?:string;
         age:number;
@@ -69,4 +70,22 @@ namespace f{
     }
     //接口属性，可选转为必填
     type RequirePerson = Required<Person>
+}
+
+namespace g{
+    interface Person{
+        name?:string;
+        age:number;
+        gender: 'male'|'female'
+    }
+    type PickPerson = Pick<Person, 'name'>;
+    //等价于
+    // interface pickPerson{
+    //     name: string;
+    // }
+ 
+    let x: PickPerson = {
+        name: 'hello'
+    }
+
 }
