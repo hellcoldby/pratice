@@ -5,3 +5,4 @@
 /*/node_modules
 /webpack/dist
 /babel/lib
+.DS_Store
