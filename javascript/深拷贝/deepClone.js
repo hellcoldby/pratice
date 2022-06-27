@@ -1,3 +1,18 @@
+<<<<<<< HEAD
+=======
+function deepClone(obj){
+    if(typeof obj !== 'object')return obj;
+
+    let new_obj = obj instanceof Array? []: {};
+
+    for(let key in obj){
+        new_obj[key] = deepClone(obj[key]);
+    }
+    return new_obj;
+}
+
+
+>>>>>>> 6702544 (test ts)
 // 深拷贝：对对象内部进行深拷贝，支持 Array、Date、RegExp、DOM
 const deepCopy = (sourceObj) => {
     if (typeof sourceObj !== "object") return;

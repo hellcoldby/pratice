@@ -1,8 +1,8 @@
 *.log
 *.temp
-/.DS_Store
 /algorithm 算法/.DS_Store
 /node_modules
 /*/node_modules
 /webpack/dist
 /babel/lib
+.DS_Store

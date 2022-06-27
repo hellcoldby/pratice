@@ -1,169 +1,110 @@
-
-/**
- * promise 承诺   一件事
- * promise 承诺 （ fn(成功的话， 失败的话){} ）
- * 
- * promise.then() 履行承诺  履行后 许下一个新的承诺 
- * promise.then( 成功时执行fn， 失败时执行fn )   
- * 
- */
+new Promise((resolve, reject)=>{
+    setTimeout(()=>{
+        resolve( {} )
+    },2000)
+}).then(res=>{
+    console.log(res);
+    // return new Promise(res=>{res(123)})
+    return 456;
+}).then(res=>{
+    console.log(res);
+})
 
 const PENDING = 'pending';
-const FULFILLED = 'fulfilled';
-const REJECTED = 'rejected';
+const SUCCESS = 'success';
+const FAIL = 'fail';
 
-
-function checkPromise(x, resolve, reject){
-    if(x instanceof Promise){
-        x.then(res=>{
-            checkPromise(res, resolve, reject);
-        }, rej=>{
-            reject(rej);
+function checkPromise(value, resolve, reject){
+    if(value instanceof Promise){
+        value.then(res=>{
+            checkPromise(res);
+        }, err =>{
+            reject(err);
         })
     }else{
-        resolve(x)
+        resolve(value);
     }
 }
 
-class Promise{
-
-    static resolve(value){
-        return new Promise((resolve, reject)=>{
-            resolve(value);
-        });
-    }
-
-    static reject(reason){
-        return new Promise ((reason, reject)=>{
-            reject(reason);
-        })
-    }
-
+class _Promise{
     constructor(fn){
         this.value = null;
-        this.error = null;
         this.state = PENDING;
-        this.onFulfilled_ary = [];
-        this.onRejected_ary = [];
-
-        let resolve = (val)=>{
-            
-            if(val instanceof Promise){
-                return  val.then(resolve, reject)
+        this.success_list = [];
+        this.fail_list = [];
+        const resolve = (value)=>{
+            if(this.state === PENDING){
+                this.state = SUCCESS;
+                this.value = value;
+                this.success_list.forEach(fn=>fn());
             }
-
-           this.value = val;
-           this.state = FULFILLED;
-           this.onFulfilled_ary.forEach(fn=>fn());
         }
-
-        let reject = (error)=>{
-            // console.log('错误', error);
-            this.error = error;
-            this.state = REJECTED;
+        const reject = (err)=>{
+            if(this.state === PENDING){
+                this.state = FAIL;
+                this.value = err;
+                this.fail_list.forEach(fn=>fn());
+            }
         }
 
         try{
             fn(resolve, reject);
         }catch(err){
-            reject(err);
+            reject(err)
         }
     }
 
     then(onFulfilled, onRejected){
-        
-        //如果onFulfilled 不是函数类型, 就改造成函数类型,继续返回一个新的 promise
-        if(typeof onFulfilled !== 'function'){
-            onFulfilled = ( val )=> val;
-        }
-
-     
-
-        return new Promise((resolve, reject)=>{
-
+        return new _Promise((_resolve, _reject)=>{
             if(this.state === PENDING){
-                this.onFulfilled_ary.push(()=>{
-                    let x = onFulfilled(this.value);
-                    checkPromise(x, resolve, reject);
+                this.success_list.push(()=>{
+                   const x = onFulfilled(this.value);
+                   checkPromise(x, _resolve, _reject);
                 });
-
-                this.onRejected_ary.push(()=>{
-                    let x = onRejected(this.error);
-                    checkPromise(x, resolve, reject);
+                this.fail_list.push(()=>{
+                   const x = onRejected(this.value);
+                   checkPromise(x, _resolve, _reject);
                 })
             }
-
-            if(this.state === FULFILLED){
-               let x = onFulfilled(this.value);
-               checkPromise(x, resolve, reject);
+    
+            if(this.state === SUCCESS){
+               const x= onFulfilled(this.value);
+               checkPromise(x, _resolve, _reject);
             }
-            if(this.state === REJECTED){
-               let x = onRejected(this.error);
-               checkPromise(x, resolve, reject);
+            if(this.state === FAIL){
+               const x = onRejected(this.value)
+               checkPromise(x, _resolve, _reject);
             }
+        })
 
-        });
-    }
-
-    catch (errCallback) {
-        return this.then(null, errCallback);
-    }
-
-    finally(callback){
-        return this.then(value => {
-            return Promise.resolve(callback()).then(()=>value)
-        }, reason=>{
-            return Promise.resolve(callback()).then(()=>{throw reason})
-        });
     }
 }
-/**
- * all() 将多个Promise 实例，包装成一个新的Promise 实例。
- * 接收一个数组 或者 具有iterator 接口作为参数，  而且成员都是promise实例。
- * 如果成员不是Promise实例，就用promise的resolve方法，将参数转为 Promise 实例。
- */
 
-Promise.all =(ary) =>{
+_Promise.resolve = (value)=>{
+    return new _Promise((res)=>{
+        res(value)
+    });
+}
 
-    if(ary[Symbol.iterator] === undefined){
-        const type = typeof ary;
-        return new TypeError (`TypeError: ${type} ${ary} is not iterator`);
-    }
-
-    let newArray=[];
-    let count = 0;
-    let len = ary.length;
-    return new Promise((resolve, reject)=>{
-        for(let index in  ary){
-            // 转化为promise 对象
-            Promise.resolve(ary[index])
-            .then(res=>{
-                newArray[index] = res;
-                if(++count === len){
-                    resolve(newArray);
+_Promise.all = (array)=>{
+    if(!array[Symbol.iterator]){
+        return new TypeError(`TypeError ${array} is not iterator`);
+    } 
+    const newArray = [];
+    const length = array.length;
+    const num = 0;
+    return new _Promise((resolve, reject)=>{
+        for(let key in array){
+            _Promise.resolve(array[key]).then(res=>{
+                if(++num === length){
+                    return newArray;
                 }
-            }, err=>{
-                 reject(err);
-            })
-        }   
+                newArray.push(res);
+            },err=>{
+                reject(err)
+            });
+        }
+
     })
+
 }
-
-
-
-// var p1 = new Promise((resolve)=>{setTimeout(()=>{return resolve(3);},3000)});
-// var p2 =Promise.resolve(1);
-// var p3 =Promise.resolve(2);
-
-
-// var p = Promise.all([p1,p2,p3]);
-
-// p.then(e=>{console.log(e)});
-
-let p = new Promise(resolve=>{
-    resolve('hahaha');
-});
-
-p.then(21312).then(res=>{
-    console.log(res);
-})
