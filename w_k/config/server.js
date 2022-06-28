@@ -8,16 +8,18 @@ const config = require("./webpack.dev_config.js");
 const compiler = webpack(config);
 
 const open = require("open");
-
-// Tell express to use the webpack-dev-middleware and use the webpack.config.js
-// configuration file as a base.
 app.use(
     webpackDevMiddleware(compiler, {
         publicPath: config.output.publicPath,
     })
 );
-app.use(webpackHotMiddleware(compiler));
-
+app.use(
+    webpackHotMiddleware(compiler, {
+        // log: console.log,
+        reload: true,
+        // heartbeat: 10 * 1000,
+    })
+);
 // Serve the files on port 3000.
 app.listen(3000, function () {
     console.log("Example app listening on port 3000!\n");
