@@ -1,9 +1,10 @@
-import "react-hot-loader";
 import React from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import Main from "./pages/Main";
 import reportWebVitals from "./reportWebVitals";
+
+//react18  createRoot 代替了 ReactDom.render
 const root = createRoot(document.getElementById("root"));
 
 root.render(
@@ -13,6 +14,14 @@ root.render(
 );
 reportWebVitals();
 
+//webpack 配置devServer后， node中的module会挂载上一个 hot对象，用来触发热更新
 if (module.hot) {
-    module.hot.accept();
+    module.hot.accept("./pages/Main", function () {
+        const Main = require("./pages/Main");
+        root.render(
+            <React.StrictMode>
+                <Main />
+            </React.StrictMode>
+        );
+    });
 }
