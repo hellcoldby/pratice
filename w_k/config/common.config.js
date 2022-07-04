@@ -1,21 +1,22 @@
 const WebpackBar = require("webpackbar"); //进度条美化
 const HtmlWebpackPlugin = require("html-webpack-plugin"); //加载html 文件
 const { CleanWebpackPlugin } = require("clean-webpack-plugin"); //清空打包文件夹
-
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
 const common_config = {
     entry: ["./src/index.js"], //入口
     output: {
-        filename: "bundle.js", //打包后的文件名
+        filename: "[name].js", //打包后的文件名
         path: path.resolve(__dirname, "../build"), // 必须是绝对路径
-        // publicPath: "/",
+        publicPath: "/",
     },
     resolve: {
         extensions: [".js", ".jsx"],
     },
     plugins: [
-        new CleanWebpackPlugin({}),
+        new CleanWebpackPlugin({}), //清空打包目录
         new HtmlWebpackPlugin({
+            //html 模板入口
             title: "test dev",
             template: "./src/index.html",
         }),
@@ -24,9 +25,16 @@ const common_config = {
             basic: false, // 默认true，启用一个简单的日志报告器
             profile: false, // 默认false，启用探查器。
         }),
+        new MiniCssExtractPlugin({
+            filename: "css/[name].css",
+        }),
     ],
     module: {
         rules: [
+            {
+                test: /\.html$/,
+                use: "html-withimg-loader", //html文件 中的图片解析
+            },
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
@@ -36,7 +44,49 @@ const common_config = {
             },
             {
                 test: /\.css$/i, // 在js 中引入css
-                use: ["style-loader", "css-loader"],
+                use: [
+                    // "style-loader",
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: "css-loader",
+                        options: {
+                            modules: {
+                                localIdentName: "[local]_[hash:base64:5]",
+                            },
+                        },
+                    },
+                ],
+            },
+            {
+                test: /\.less$/i, // 在js 中引入css
+                use: [
+                    // "style-loader",
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: "css-loader",
+                        options: {
+                            modules: {
+                                localIdentName: "[local]_[hash:base64:5]",
+                            },
+                        },
+                    },
+                    "less-loader",
+                ],
+            },
+            {
+                test: /\.(jpg|png|gif)/,
+                use: [
+                    {
+                        loader: "url-loader",
+                        options: {
+                            limit: 8192,
+                            outputPath: "img", //打包后磁盘位置
+                            // publicPath: "./img", //发布后网络资源位置
+                            esModule: false,
+                        },
+                    },
+                ],
+                type: "javascript/auto",
             },
         ],
     },
