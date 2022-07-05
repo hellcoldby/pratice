@@ -1,4 +1,5 @@
 let path = require("path");
+let webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const WebpackBar = require("webpackbar"); //进度条美化
@@ -6,7 +7,11 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 // const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 module.exports = {
     mode: "production", // 两种模式  production or  development
-    entry: ["./src/index.js"], //入口
+    // entry: ["./src/index.js"], //入口
+    entry: {
+        app: { import: "./src/index.js", dependOn: "react-vendors" },
+        "react-vendors": ["react", "react-dom"],
+    }, //入口
     output: {
         filename: "js/[name].js", //打包后的文件名
         path: path.resolve(__dirname, "../build"), // 必须是绝对路径
@@ -47,8 +52,8 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: "css/[name].css",
         }),
-        // new BundleAnalyzerPlugin({
-        //     analyzerPort: 8887,
+        // new webpack.DllReferencePlugin({
+        //     manifest: path.resolve(__dirname, "../build/dll", "manifest.json"),
         // }),
     ],
     module: {

@@ -4,8 +4,8 @@
 const common_config = require("./common.config");
 
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
-// const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-
+const webpack = require("webpack");
+const path = require("path");
 module.exports = {
     ...common_config,
     mode: "development", // 两种模式  production or  development
@@ -33,11 +33,11 @@ module.exports = {
     devServer: {
         hot: true,
         open: true,
-        static: "../build",
+        // static: [
+        //     {
+        //         directory: path.join(__dirname, "dll"),
+        //     },
+        // ],
     },
-    plugins: [
-        ...common_config.plugins,
-        new ReactRefreshWebpackPlugin(),
-        // new BundleAnalyzerPlugin()
-    ],
+    plugins: [...common_config.plugins, new ReactRefreshWebpackPlugin()],
 };

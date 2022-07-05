@@ -30,11 +30,11 @@
     "scripts": {
         "start": "export NODE_ENV='development' && npx webpack server  --config ./config/webpack.config.js",
         "dev": "export NODE_ENV='development' && node ./config/server.js",
-        "build": "export NODE_ENV='production' && webpack --config ./config/webpack.pro_config.js"
+        "build": "export NODE_ENV='production' && webpack --config ./config/webpack.pro_config.js",
+        "dll": "webpack --config ./config/webpack.react_config.js"
     },
     "name": "webpack-dev-test",
     "version": "1.0.0",
-    "main": "index.js",
     "license": "MIT",
     "dependencies": {
         "core-js": "3",

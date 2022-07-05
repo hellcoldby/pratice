@@ -1,10 +1,13 @@
 const WebpackBar = require("webpackbar"); //进度条美化
 const HtmlWebpackPlugin = require("html-webpack-plugin"); //加载html 文件
-const { CleanWebpackPlugin } = require("clean-webpack-plugin"); //清空打包文件夹
+// const { CleanWebpackPlugin } = require("clean-webpack-plugin"); //清空打包文件夹
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
 const common_config = {
-    entry: ["./src/index.js"], //入口
+    entry: {
+        app: { import: "./src/index.js", dependOn: "react-vendors" },
+        "react-vendors": ["react", "react-dom"],
+    }, //入口
     output: {
         filename: "js/[name].js", //打包后的文件名
         path: path.resolve(__dirname, "../build"), // 必须是绝对路径
@@ -18,7 +21,7 @@ const common_config = {
         // mainFiles:[], //指定入口文件
     },
     plugins: [
-        new CleanWebpackPlugin({}), //清空打包目录
+        // new CleanWebpackPlugin({}), //清空打包目录
         new HtmlWebpackPlugin({
             //html 模板入口
             title: "test dev",
