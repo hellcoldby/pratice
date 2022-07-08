@@ -3,15 +3,36 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const WebpackBar = require("webpackbar"); //进度条美化
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+// const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 module.exports = {
     mode: "production", // 两种模式  production or  development
     entry: ["./src/index.js"], //入口
     output: {
-        filename: "[name].js", //打包后的文件名
+        filename: "js/[name].js", //打包后的文件名
         path: path.resolve(__dirname, "../build"), // 必须是绝对路径
         // publicPath: "/",//发布后网络资源位置
     },
     devtool: "source-map",
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    name: "commons",
+                    chunks: "initial",
+                    minChunks: 2,
+           
+                },
+                vendors: {
+                    //拆分第三方模块到单独的文件中
+                    test: /[\\/]node_modules[\\/]/,
+                    name: "vendors",
+                    chunks: "all",
+                    priority:1,
+                    filename: 'js/[name]/bundle.js',
+                },
+            },
+        },
+    },
     plugins: [
         new CleanWebpackPlugin({}),
         new HtmlWebpackPlugin({
@@ -26,6 +47,9 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: "css/[name].css",
         }),
+        // new BundleAnalyzerPlugin({
+        //     analyzerPort: 8887,
+        // }),
     ],
     module: {
         rules: [

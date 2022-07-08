@@ -6,12 +6,16 @@ const path = require("path");
 const common_config = {
     entry: ["./src/index.js"], //入口
     output: {
-        filename: "[name].js", //打包后的文件名
+        filename: "js/[name].js", //打包后的文件名
         path: path.resolve(__dirname, "../build"), // 必须是绝对路径
         publicPath: "/",
     },
     resolve: {
+        // 解析第三方包
+
         extensions: [".js", ".jsx"],
+        // mainFields: ["style", "main"], //先查找包里的style 文件，再查找main 文件
+        // mainFiles:[], //指定入口文件
     },
     plugins: [
         new CleanWebpackPlugin({}), //清空打包目录

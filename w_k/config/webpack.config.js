@@ -4,16 +4,40 @@
 const common_config = require("./common.config");
 
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+// const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = {
     ...common_config,
     mode: "development", // 两种模式  production or  development
     entry: ["./src/index.js"],
     devtool: "source-map",
+    optimization: {
+        splitChunks: {
+            // 分割代码块
+            cacheGroups: {//缓存组
+                commons: {    //公共模块
+                    name: "commons",
+                    chunks: "initial", //入口引用
+                    minChunks: 2, // 引用次数 
+                },
+                vendors: {
+                    //拆分第三方模块到单独的文件中
+                    test: /[\\/]node_modules[\\/]/,
+                    name: "vendors",
+                    chunks: "all",
+                    priority:1, //先抽离第三方， 权重
+                },
+            },
+        },
+    },
     devServer: {
         hot: true,
         open: true,
         static: "../build",
     },
-    plugins: [new ReactRefreshWebpackPlugin(), ...common_config.plugins],
+    plugins: [
+        ...common_config.plugins,
+        new ReactRefreshWebpackPlugin(),
+        // new BundleAnalyzerPlugin()
+    ],
 };
