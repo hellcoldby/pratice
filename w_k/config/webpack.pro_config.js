@@ -25,7 +25,6 @@ module.exports = {
                     name: "commons",
                     chunks: "initial",
                     minChunks: 2,
-           
                 },
                 vendors: {
                     //拆分第三方模块到单独的文件中

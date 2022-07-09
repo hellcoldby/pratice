@@ -1,8 +1,8 @@
 /**
  *  devServer 热更新配置
  */
+const webpack = require('webpack');
 const common_config = require("./common.config");
-
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 // const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 

@@ -1,26 +1,58 @@
-import React, { useState } from "react";
-import A from "../A";
+import React, { useState, Suspense } from "react";
+// import A from "../A";
 import pic from "../../static/icon.jpg";
 import styles from "./index.less";
+
+// 懒加载要求 必须返回一个promise, resolve 接受一个组件
+const A_lazy = React.lazy(()=>{ 
+    return new Promise((resolve)=>{
+        setTimeout(()=>{
+            resolve(import('../A'))
+        },2000)
+    })
+});
+const B_lazy = React.lazy(() => {
+    return new Promise(resolve=>{
+        setTimeout(() => {
+            resolve(import('../B'));
+        }, 2000);
+    })
+});
+
 function Main() {
     const [value, setValue] = useState(0);
-    console.log("main");
+    const [sel, setSel] = useState('a');
+    // console.log("main");
+
+    function handleLazy(){
+        // import('../B/index').then(data=>{
+        //     console.log(data);
+        // })
+        setSel(sel==='a'?'b':'a')
+    }
+
     return (
         <>
             <div style={{ overflow: "hidden" }}>
                 <h1
                     style={{ float: "left", width: "300px", border: "1px solid red" }}
-                    onClick={() => {
-                        setValue(value === 0 ? 123 : 0);
-                    }}
+                    
                 >
                     {" "}
                     hello world1!
-                    <p>
+                    <p onClick={() => {
+                        setValue(value === 0 ? 123 : 0);
+                    }}>
                         click：---&gt;<button>{value}</button>
                     </p>
                     <p> 父级状态变化 不触发子组件更新 </p>
-                    <A />
+                   
+                    <div >
+                        <button onClick={handleLazy}>react.lazy()点击懒加载:</button> 
+                        <Suspense fallback={<div>Loading...</div>}>
+                            {sel==='a'? <A_lazy/>: <B_lazy/>}
+                        </Suspense>
+                    </div>
                 </h1>
 
                 <div style={{ float: "left", paddingRight: "50px" }}>
