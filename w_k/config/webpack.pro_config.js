@@ -52,8 +52,8 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: "css/[name].css",
         }),
-        // new webpack.DllReferencePlugin({
-        //     manifest: path.resolve(__dirname, "../build/dll", "manifest.json"),
+        // new BundleAnalyzerPlugin({
+        //     analyzerPort: 8887,
         // }),
     ],
     module: {
