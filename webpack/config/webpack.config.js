@@ -13,19 +13,19 @@ module.exports = {
     devtool: "source-map",
     optimization: {
         splitChunks: {
-            // 分割代码块
-            cacheGroups: {//缓存组
-                commons: {    //公共模块
+            cacheGroups: {
+                commons: {
                     name: "commons",
-                    chunks: "initial", //入口引用
-                    minChunks: 2, // 引用次数 
+                    chunks: "initial",
+                    minChunks: 2,
                 },
                 vendors: {
                     //拆分第三方模块到单独的文件中
                     test: /[\\/]node_modules[\\/]/,
                     name: "vendors",
                     chunks: "all",
-                    priority:1, //先抽离第三方， 权重
+                    priority:1,
+                    filename: 'js/[name]/bundle.js',
                 },
             },
         },

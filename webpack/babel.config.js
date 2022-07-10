@@ -1,17 +1,19 @@
-module.exports = (api) => {
+module.exports = function (api) {
     api.cache(true);
     return {
-        plugins: [],
         presets: [
             [
                 "@babel/preset-env",
                 {
                     targets: {
-                        node: "8.6",
+                        chrome: "67",
                     },
                     useBuiltIns: "usage",
+                    corejs: 3,
                 },
             ],
+            "@babel/preset-react",
         ],
+        plugins: [process.env.NODE_ENV === "production" ? {} : "react-refresh/babel"], //react热更新保存状态插件
     };
 };

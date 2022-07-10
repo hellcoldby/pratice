@@ -95,6 +95,19 @@ const common_config = {
                 ],
                 type: "javascript/auto",
             },
+            {
+                test: /\.(woff|woff2|eot|ttf|otf)$/i, // 引入自定义字体
+                use: [
+                    {
+                        loader: "file-loader",
+                        options: {
+                            outputPath: "tff", //打包后磁盘位置
+                            esModule: false,
+                        },
+                    },
+                ],
+                type: "javascript/auto",
+            }
         ],
     },
 };

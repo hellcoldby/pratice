@@ -1,46 +1,27 @@
-// import './style.css';
-// import Icon from './icon.jpg'
-// import printMe from "./print.js";
+import React from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import Main from "./pages/Main";
+import reportWebVitals from "./reportWebVitals";
 
-class Book {
-    title = "a";
-    static cover;
+//react18  createRoot 代替了 ReactDom.render
+const root = createRoot(document.getElementById("root"));
 
-    test() {
-        let a = 1;
-        let b = 2;
-        const c = a + b;
-        console.log(c);
-    }
+root.render(
+    <React.StrictMode>
+        <Main />
+    </React.StrictMode>
+);
+reportWebVitals();
+
+//webpack 配置devServer后， node中的module会挂载上一个 hot对象，用来触发热更新
+if (module.hot) {
+    module.hot.accept("./pages/Main", function () {
+        const Main = require("./pages/Main");
+        root.render(
+            <React.StrictMode>
+                <Main />
+            </React.StrictMode>
+        );
+    });
 }
-
-// const a = new Book();
-// a.title = "The Song of ice and fire";
-
-async function foo() {
-    await new Book();
-}
-foo();
-
-const array = [1, 2, 3];
-
-Array.from(array, (x) => x + x);
-
-// const myIcon = new Image();
-// myIcon.src = Icon;
-
-// function component() {
-// let element = document.createElement('div');
-// element.innerHTML = 'hello world';
-// element.classList.add('hello');
-// element.appendChild(myIcon);
-
-// const btn = document.createElement('button');
-// btn.innerHTML = 'Click me and check the console!';
-// btn.onclick = printMe;
-// element.appendChild(btn);
-
-//   return element;
-// }
-
-// document.body.appendChild(component());
