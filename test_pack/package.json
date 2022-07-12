@@ -1,0 +1,9 @@
+{
+  "name": "test_pack",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "bin":{
+    "test_pack":"./bin/test_pack.js"
+  }
+}
