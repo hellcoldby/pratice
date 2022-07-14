@@ -1,12 +1,15 @@
 const fs = require('fs');
 const path = require('path');
-
+const babylon = require('babylon');
+const traverse = require('@babel/traverse').default;
+const t = require('@babel/types');
+const generator = require('@babel/generator').default;
 
 /**
  * babylon 主要就是把源码 转换成ast
- * @babel/traverse
- * @babel/types
- * @babel/generator
+ * @babel/traverse 遍历ast 的工具
+ * @babel/types  修改Ast
+ * @babel/generator 生成code 和 sourceMap
  */
 
 class Compiler{
@@ -28,9 +31,29 @@ class Compiler{
     // 解析源码  --- 依靠AST 解析语法树 需要用到babel相关的插件
     parse(source, parentPath) {
         console.log(source, parentPath);
+        let ast = babylon.parse(source);
+        let dependencies = []; //依赖的数组
+
+        traverse(ast, {
+            //调用表达式
+            CallExpression(p){ // a()  require()
+                let node = p.node; // 对应的节点
+                if( node.callee.name === 'require'){
+                    node.callee.name = "__webpack_require__";
+                    let moduleName = node.arguments[0].values //取到模块引用的名字
+                    moduleName = moduleName + (path.extname(moduleName)? '':'.js');
+                    moduleName = './' + path.join(parentPath, moduleName);  // 'src/a.js'
+                    dependencies.push(moduleName);
+                    node.arguments = [t.stringLiteral(moduleName)];
+                }
+            }
+        });
+
+       let sourceCode = generator(ast).code;
+       return {sourceCode, dependencies}
     }
 
-    //构建模块
+    //构建模块 
     buildModule(modulePath, isEntry){
         //获取源码
         let source = this.getSource(modulePath);
@@ -38,6 +61,7 @@ class Compiler{
         let moduleName = './' + path.relative(this.root, modulePath);
         console.log('------文件源码', source);
         console.log('-----模块相对路径', moduleName);
+
 
         if(isEntry){
             this.entryId = moduleName; //保存入口的名字
