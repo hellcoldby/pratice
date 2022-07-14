@@ -30,7 +30,7 @@ class Compiler{
 
     // 解析源码  --- 依靠AST 解析语法树 需要用到babel相关的插件
     parse(source, parentPath) {
-        console.log(source, parentPath);
+        console.log(parentPath);
         let ast = babylon.parse(source);
         let dependencies = []; //依赖的数组
 
@@ -38,13 +38,15 @@ class Compiler{
             //调用表达式
             CallExpression(p){ // a()  require()
                 let node = p.node; // 对应的节点
+                // console.log('node：---', node);
                 if( node.callee.name === 'require'){
                     node.callee.name = "__webpack_require__";
-                    let moduleName = node.arguments[0].values //取到模块引用的名字
-                    moduleName = moduleName + (path.extname(moduleName)? '':'.js');
-                    moduleName = './' + path.join(parentPath, moduleName);  // 'src/a.js'
-                    dependencies.push(moduleName);
-                    node.arguments = [t.stringLiteral(moduleName)];
+                    let moduleName = node.arguments[0].value //取到模块引用的名字
+                    console.log(moduleName);
+                    // moduleName = moduleName + (path.extname(moduleName)? '':'.js');
+                    // moduleName = './' + path.join(parentPath, moduleName);  // 'src/a.js'
+                    // dependencies.push(moduleName);
+                    // node.arguments = [t.stringLiteral(moduleName)];
                 }
             }
         });
@@ -58,16 +60,17 @@ class Compiler{
         //获取源码
         let source = this.getSource(modulePath);
         // 模块id --- 绝对路径modulePath 转换为 相对路径this.root
-        let moduleName = './' + path.relative(this.root, modulePath);
-        console.log('------文件源码', source);
-        console.log('-----模块相对路径', moduleName);
-
+        let moduleName = './'+ path.relative(this.root, modulePath);
+        // console.log('------文件源码', source);
+        // console.log('-----模块相对路径', moduleName);
+        console.log('====',moduleName);
 
         if(isEntry){
             this.entryId = moduleName; //保存入口的名字
         }
 
         // 解析把源码source 进行改造，返回一个依赖列表
+        console.log('~~~~~~~',path.dirname(moduleName));
         let {sourceCode, dependencies} = this.parse(source, path.dirname(moduleName)); // ./src
 
         // 把相对路径和模块中的内容 对应起来
@@ -77,6 +80,7 @@ class Compiler{
     emitFile(){}
 
     run(){
+        console.log('-----',path.resolve(this.root, this.entry));
         //执行 并且创建模块的依赖关系
         this.buildModule(path.resolve(this.root, this.entry), true);
 
