@@ -1,2 +1,2 @@
-let str = require('./a.js');
+let str = require('./a');
 console.log(str);
