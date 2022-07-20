@@ -17,7 +17,7 @@ module.exports = {
         path: path.resolve(__dirname, "../build"), // 必须是绝对路径
         // publicPath: "/",//发布后网络资源位置
     },
-    devtool: "source-map",
+    // devtool: "source-map",
     optimization: {
         splitChunks: {
             cacheGroups: {
