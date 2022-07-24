@@ -1,0 +1,34 @@
+{
+    "name": "hello-npm",
+    "version": "1.0.0",
+    "description": "测试npm打包",
+    "main": "lib/bundle.cjs.js",
+    "module": "lib/bundle.esm.js",
+    "browser": "lib/bundle.browser.js",
+    "types": "types/index.d.ts",
+    "scripts": {
+        "dev": "npx rollup -wc rollup.config.dev.js",
+        "build": "npx rollup -c rollup.config.js && npm run build:types",
+        "build:types": "npx tsc"
+    },
+    "author": "me",
+    "license": "ISC",
+    "devDependencies": {
+        "@babel/core": "^7.18.9",
+        "@rollup/plugin-babel": "^5.3.1",
+        "@rollup/plugin-commonjs": "^22.0.1",
+        "@rollup/plugin-eslint": "^8.0.2",
+        "@rollup/plugin-node-resolve": "^13.3.0",
+        "@rollup/plugin-typescript": "^8.3.3",
+        "rollup": "^2.77.0",
+        "rollup-plugin-json": "^4.0.0",
+        "rollup-plugin-livereload": "^2.0.5",
+        "rollup-plugin-serve": "^2.0.0",
+        "typescript": "^4.7.4"
+    },
+    "dependencies": {
+        "-": "^0.0.1",
+        "D": "^1.0.0",
+        "tslib": "^2.4.0"
+    }
+}
