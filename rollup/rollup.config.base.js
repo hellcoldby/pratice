@@ -36,6 +36,9 @@ export default {
     }),
     typescript(),
     eslint(),
-    babel({ exclude: "node_modules/**" }),
+    babel({
+      babelHelpers: 'bundled',
+       exclude: "node_modules/**" 
+      }),
   ],
 };
