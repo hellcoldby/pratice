@@ -1,6 +1,6 @@
 *.log
 *.temp
-/algorithm 算法/.DS_Store
+**/.DS_Store
 /node_modules
 /*/node_modules
 /webpack/dist
