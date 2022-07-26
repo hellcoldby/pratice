@@ -1,4 +1,12 @@
 import { useState } from 'react'
+import * as monaco from 'monaco-editor';
+import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
+import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
+import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker';
+import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker';
+import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
+
+
 import reactLogo from './assets/react.svg'
 import styles from './App.module.less';
 
@@ -6,7 +14,7 @@ function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <div>
+    <div >
 
       <div className={styles.app}>
         <div >
@@ -23,7 +31,7 @@ function App() {
             count is {count}
           </button>
           <p>
-            Edit <code>src/App.tsx</code> and save to test HMR
+            Edit <code>src/App.tsx</code> and save to test HMRRRR
           </p>
         </div>
         <p className={styles['read-the-docs']}>
