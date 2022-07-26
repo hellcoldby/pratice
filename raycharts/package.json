@@ -1,0 +1,60 @@
+{
+    "name": "raycharts",
+    "version": "1.1.20",
+    "description": "chart components",
+    "keywords": [
+        "chart"
+    ],
+    "main": "lib/raycharts.esm.js",
+    "author": "raydata",
+    "contributors": [],
+    "scripts": {
+        "dev": "npx rollup -wc rollup.config.dev.js",
+        "build": "npx rollup -c rollup.config.js "
+    },
+    "files": [
+        "lib",
+        "package.json"
+    ],
+    "dependencies": {
+        "@types/react": "^18.0.15",
+        "@types/react-dom": "^18.0.6",
+        "lodash": "^4.17.19",
+        "mathjs": "8.0.1",
+        "tslib": "^2.4.0",
+        "zrender": "~5.3.1"
+    },
+    "peerDependencies": {
+        "react": "^16.8.0 || ^17.0",
+        "react-dom": "^16.8.0 || ^17.0"
+    },
+    "license": "MIT",
+    "devDependencies": {
+        "@babel/core": "^7.18.9",
+        "@babel/preset-env": "^7.18.9",
+        "@babel/preset-react": "^7.18.6",
+        "@babel/preset-typescript": "^7.18.6",
+        "@rollup/plugin-babel": "^5.3.1",
+        "@rollup/plugin-commonjs": "^22.0.1",
+        "@rollup/plugin-eslint": "^8.0.2",
+        "@rollup/plugin-node-resolve": "^13.3.0",
+        "@rollup/plugin-typescript": "^8.3.3",
+        "@typescript-eslint/eslint-plugin": "^5.30.7",
+        "@typescript-eslint/parser": "^5.30.7",
+        "eslint": "^8.20.0",
+        "eslint-plugin-react": "^7.30.1",
+        "less": "^4.1.2",
+        "less-plugin-npm-import": "^2.1.0",
+        "postcss": "^8.4.14",
+        "rollup": "^2.77.0",
+        "rollup-plugin-filesize": "^9.1.2",
+        "rollup-plugin-json": "^4.0.0",
+        "rollup-plugin-less-modules": "^0.1.11",
+        "rollup-plugin-livereload": "^2.0.5",
+        "rollup-plugin-postcss": "^4.0.2",
+        "rollup-plugin-serve": "^2.0.0",
+        "rollup-plugin-sourcemaps": "^0.6.3",
+        "rollup-plugin-terser": "^7.0.2",
+        "typescript": "^4.7.4"
+    }
+}

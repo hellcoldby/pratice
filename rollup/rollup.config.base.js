@@ -4,7 +4,7 @@ import json from "rollup-plugin-json";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import eslint from "@rollup/plugin-eslint";
-import { babel } from '@rollup/plugin-babel'
+import { babel } from '@rollup/plugin-babel';
 const formatName = "hello";
 export default {
   input: "./src/index.ts",
@@ -12,6 +12,8 @@ export default {
     {
       file: pkg.main,
       format: "cjs",
+      sourcemap: true,
+    
     },
     {
       file: pkg.module,
@@ -21,6 +23,7 @@ export default {
       file: pkg.browser,
       format: "umd",
       name: formatName,
+      sourcemap: true,
     },
   ],
   plugins: [
@@ -40,5 +43,6 @@ export default {
       babelHelpers: 'bundled',
        exclude: "node_modules/**" 
       }),
+
   ],
 };

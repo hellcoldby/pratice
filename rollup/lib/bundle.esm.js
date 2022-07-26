@@ -1,1 +1,1 @@
-console.log("hello world");
+Object.defineProperty(exports,"__esModule",{value:!0});const e=require("tslib").__importDefault(require("zrender"));console.log("hello world");const t=document.getElementsByClassName("box")[0],l=e.default.init(t),r=l.getWidth(),s=l.getHeight(),n=new e.default.Circle({shape:{cx:30,cy:s/2,r:30},style:{fill:"transparent",stroke:"#FF6EBE"},silent:!0});n.animate("shape",!0).when(5e3,{cx:r-30}).when(1e4,{cx:30}).start(),l.add(n);
