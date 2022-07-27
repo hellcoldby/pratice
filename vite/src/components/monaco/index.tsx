@@ -36,7 +36,7 @@ interface InsType {
 let instance:InsType;
 
 let example = `/** 
-输入代码测试
+* 输入代码测试
 */`;
 
 const Editor =()=>{
