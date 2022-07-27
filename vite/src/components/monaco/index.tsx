@@ -7,9 +7,12 @@ import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker';
 import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker';
 import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
 
+
+// console.log(self.MonacoEnvironment);
+
 //在web works 中只有self 可以取到全局对象
-self.MonacoEnvironment = {
-    getWorker(_, label) {
+(self as any).MonacoEnvironment = {
+    getWorker(_, label:string) {
         if (label === 'json') {
             return new jsonWorker();
         }
@@ -39,13 +42,14 @@ let example = `/**
 const Editor =()=>{
 
     useEffect(() => {
+        console.log('初始化编辑器');
         instance = monaco.editor.create(document.getElementById('monaco')as HTMLElement, {
             value: example,
             language: 'javascript',  //
             automaticLayout: true
         });
     
-        instance.onDidChangeModelContent(() => {
+        instance.onDidChangeModelContent(() => {   
           // 获取到当前编辑内容
           // onChange(instance.getValue())
         })
