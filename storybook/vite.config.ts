@@ -8,4 +8,3 @@ export default defineConfig({
   },
   plugins: [react()]
 })
-// https://juejin.cn/post/7003722250960502820#heading-6
