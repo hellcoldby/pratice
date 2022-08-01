@@ -4,7 +4,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Header } from '../src/components/Header/Header';
 
 export default {
-  title: 'Example/Header',
+  title: '组件列表/Header',
   component: Header,
   parameters: {
     // More on Story layout: https://storybook.js.org/docs/react/configure/story-layout
