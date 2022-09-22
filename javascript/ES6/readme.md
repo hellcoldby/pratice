@@ -1,0 +1,1 @@
+npx babel babel.js --out-dir lib --presets '@babel/preset-env'
