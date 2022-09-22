@@ -7,3 +7,5 @@
 /webpack/build
 /babel/lib
 .DS_Store
+/vite/.storybook
+/vite/storybook-static

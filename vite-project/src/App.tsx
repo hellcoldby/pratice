@@ -3,11 +3,15 @@ import { useState} from 'react'
 
 import reactLogo from './assets/react.svg'
 import styles from './App.module.less';
-import Monaco from './components/monaco'
-
+import Monaco from './components/monaco';
+import Test from './components/test';
 
 function App({}) {
   const [count, setCount] = useState(0);
+
+  function handleTest(){
+    setCount(count+1)
+  }
 
   return (
     <div >
@@ -21,8 +25,8 @@ function App({}) {
             <img src={reactLogo} className={`${styles.logo} ${styles.react}`} alt="React logo" />
           </a>
         </div>
-        <h1>Vite + React</h1>
-      
+        <h1 onClick={handleTest}>Vite + React</h1>
+        <Test num={count} ></Test>
       </div>
       <Monaco/>
     </div>
