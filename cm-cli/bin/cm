@@ -1,0 +1,40 @@
+#!/usr/bin/env node
+
+const {program} = require('commander');
+
+program
+    .name('test-cli')
+    .description('描述：这是一个自用的 Cli 前端脚手架')
+    .version('0.0.1')
+program
+    .usage('修改帮助信息的首行提示')
+
+program
+    .command('add')
+    .description('add a new template')
+    .action(()=>{
+        require('../commands/add')
+    })
+
+program
+    .command('delete')
+    .description('delete a template')
+    .action(()=>{
+        require('../commands/delete')
+    })
+
+program
+    .command('list')
+    .description('list the templateList')
+    .action(()=>{
+        require('../commands/list')
+    })
+
+program
+    .command('init')
+    .description('init a project')
+    .action(()=>{
+        require('../commands/init')
+    })
+
+program.parse(process.argv)
