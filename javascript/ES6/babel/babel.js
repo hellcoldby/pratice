@@ -1,4 +1,6 @@
+import { greeting } from './utils'
 
+greeting();
 let a = 1;
 let b = 2;
 const c = a + b;
@@ -6,6 +8,7 @@ const c = a + b;
 const fun = ()=>{return 'hello '}
 
 class A {
+    static a = 'hello'
     constructor(name){
         this.name = name;
     }
