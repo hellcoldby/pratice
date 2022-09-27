@@ -1,4 +1,4 @@
-import { greeting } from './utils'
+import { greeting } from '../babel-register/utils'
 
 greeting();
 let a = 1;

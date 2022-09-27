@@ -1,4 +1,4 @@
 
 require('./babel-register-if-necessary');
 
-module.exports = require('./test');
+module.exports = require('../../test');

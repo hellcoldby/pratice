@@ -9,3 +9,4 @@
 .DS_Store
 /vite/.storybook
 /vite/storybook-static
+/*/**/node_modules

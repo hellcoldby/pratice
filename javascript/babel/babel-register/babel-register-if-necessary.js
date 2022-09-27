@@ -2,6 +2,6 @@
     debugger;
     require('@babel/register')({
         extensions:['js', 'ts'],
-        ...require('../babel.config')
+        ...require('../config/babel.config')
     })
 // }
