@@ -13,35 +13,12 @@ const common_config = {
         path: path.resolve(__dirname, "../build"), // 必须是绝对路径
         publicPath: "/",
     },
-    resolve: {
-        // 解析第三方包
-
-        extensions: [".js", ".jsx"],
-        // mainFields: ["style", "main"], //先查找包里的style 文件，再查找main 文件
-        // mainFiles:[], //指定入口文件
-    },
-    plugins: [
-        // new CleanWebpackPlugin({}), //清空打包目录
-        new HtmlWebpackPlugin({
-            //html 模板入口
-            title: "test dev",
-            template: "./src/index.html",
-        }),
-        new WebpackBar({
-            color: "#6aa84f", // 默认green，进度条颜色支持HEX
-            basic: false, // 默认true，启用一个简单的日志报告器
-            profile: false, // 默认false，启用探查器。
-        }),
-        new MiniCssExtractPlugin({
-            filename: "css/[name].css",
-        }),
-    ],
     module: {
         rules: [
-            {
-                test: /\.html$/,
-                use: "html-withimg-loader", //html文件 中的图片解析
-            },
+            // {
+            //     test: /\.html$/,
+            //     use: "html-withimg-loader", //html文件 中的图片解析
+            // },
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
@@ -110,6 +87,31 @@ const common_config = {
             }
         ],
     },
+    resolve: {
+        // 解析第三方包
+
+        extensions: [".js", ".jsx"],
+        // mainFields: ["style", "main"], //先查找包里的style 文件，再查找main 文件
+        // mainFiles:[], //指定入口文件
+    },
+    plugins: [
+        // new CleanWebpackPlugin({}), //清空打包目录
+        new HtmlWebpackPlugin({
+            //html 模板入口
+            title: "test dev",
+            template: "./src/index.html",
+            favicon:'./src/public/favicon.ico'
+        }),
+        new WebpackBar({
+            color: "#6aa84f", // 默认green，进度条颜色支持HEX
+            basic: false, // 默认true，启用一个简单的日志报告器
+            profile: false, // 默认false，启用探查器。
+        }),
+        new MiniCssExtractPlugin({
+            filename: "css/[name].css",
+        }),
+    ]
+
 };
 
 module.exports = common_config;

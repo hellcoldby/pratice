@@ -1,6 +1,6 @@
 import React, { useState, Suspense } from "react";
 // import A from "../A";
-import pic from "../../static/icon.jpg";
+import pic from "../../public/icon.jpg";
 import styles from "./index.less";
 
 // 懒加载要求 必须返回一个promise, resolve 接受一个组件
