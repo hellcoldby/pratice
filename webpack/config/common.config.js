@@ -12,19 +12,35 @@ const common_config = {
         filename: "js/[name].js", //打包后的文件名
         path: path.resolve(__dirname, "../build"), // 必须是绝对路径
         publicPath: "/",
+    }, 
+    resolveLoader: {
+        // alias: {
+        //     "custom-loader": path.resolve(__dirname, "../loaders/test/index.js")
+        // }
+        modules:[
+            'node_modules',
+            path.resolve(__dirname, '../loaders')
+        ]
     },
+
     module: {
         rules: [
             // {
             //     test: /\.html$/,
             //     use: "html-withimg-loader", //html文件 中的图片解析
             // },
+            
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                use: {
-                    loader: "babel-loader",
-                },
+                use:[
+                    {
+                        loader: path.resolve(__dirname, '../loaders/babel-loader.js')
+                    },
+                    // {
+                    //     loader:'custom-loader'
+                    // }
+                ] 
             },
             {
                 test: /\.css$/i, // 在js 中引入css

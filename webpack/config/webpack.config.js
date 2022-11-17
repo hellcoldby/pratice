@@ -5,7 +5,7 @@ const webpack = require('webpack');
 const common_config = require("./common.config");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 // const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-
+const FileListPlugin = require('../plguins/FileListPlugin');
 module.exports = {
     ...common_config,
     mode: "development", // 两种模式  production or  development
@@ -43,5 +43,8 @@ module.exports = {
         ...common_config.plugins,
         new ReactRefreshWebpackPlugin(),
         // new BundleAnalyzerPlugin()
+        new FileListPlugin({
+            filename:'list.md'
+        })
     ],
 };

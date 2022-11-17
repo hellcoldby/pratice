@@ -7,14 +7,14 @@ import styles from "./index.less";
 const A_lazy = React.lazy(()=>{ 
     return new Promise((resolve)=>{
         setTimeout(()=>{
-            resolve(import('../A'))
+            resolve(import(/* webpackChunkName: "pageA" */'../A'))
         },2000)
     })
 });
 const B_lazy = React.lazy(() => {
     return new Promise(resolve=>{
         setTimeout(() => {
-            resolve(import('../B'));
+            resolve(import(/* webpackChunkName: "pageB" */'../B'));
         }, 2000);
     })
 });

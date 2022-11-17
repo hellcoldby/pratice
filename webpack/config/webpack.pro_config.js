@@ -9,8 +9,7 @@ module.exports = {
     mode: "production", // 两种模式  production or  development
     // entry: ["./src/index.js"], //入口
     entry: {
-        app: { import: "./src/index.js", dependOn: "react-vendors" },
-        "react-vendors": ["react", "react-dom"],
+        app: { import: "./src/index.js" }
     }, //入口
     output: {
         filename: "js/[name].js", //打包后的文件名
@@ -19,21 +18,30 @@ module.exports = {
     },
     // devtool: "source-map",
     optimization: {
+        removeEmptyChunks: true, //如果 chunk 为空，告知 webpack 检测或移除这些 chunk。
         splitChunks: {
             cacheGroups: {
                 commons: {
-                    name: "commons",
+                    // test: /[\\/]node_modules[\\/]/,
                     chunks: "initial",
                     minChunks: 2,
+                    name(module){
+                        const moduleFileName = module
+                            .identifier()
+                            .split('/')
+                            .reduceRight((item) => item);
+                        return `${moduleFileName}`;
+                    }
+
                 },
-                vendors: {
-                    //拆分第三方模块到单独的文件中
-                    test: /[\\/]node_modules[\\/]/,
-                    name: "vendors",
-                    chunks: "all",
-                    priority:1,
-                    filename: 'js/[name]/bundle.js',
-                },
+              
+                // vendor: {
+                //     test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+                //     name: 'react&react-dom',
+                //     chunks: 'all',
+                //     priority:1,
+                //     filename: 'js/[name]/bundle.js',
+                // }
             },
         },
     },
@@ -42,6 +50,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             title: "test dev",
             template: "./src/index.html",
+            favicon:'./src/public/favicon.ico'
         }),
         new WebpackBar({
             color: "#6aa84f", // 默认green，进度条颜色支持HEX
