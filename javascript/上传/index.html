@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <input type="file" id="input-img" />
+        <script>
+            let inputDom = document.querySelector("#input-img");
+
+            inputDom.onchange = function () {
+                const fileObj = inputDom.files[0];
+                _compressAndUploadFile(fileObj);
+            };
+
+            function _compressAndUploadFile(file) {
+                compressImage(file).then((resultObj) => {
+                    let { canvas, blob, base64, fileName, oSize } = resultObj;
+                    if (blob.size > oSize) {
+                        that._uploadFile(file, fileName);
+                    } else {
+                        //压缩后比原来小，上传压缩后的
+                        _uploadFile(blob, fileName);
+                    }
+                    // 下载
+                    downloadImgFromBlob(blob, fileName);
+                });
+            }
+            
+            //上传
+            function _uploadFile(file) {
+                let params = new FormData();
+                params.append("file", file);
+            }
+        </script>
+    </body>
+</html>
