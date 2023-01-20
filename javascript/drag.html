@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #box{
+            width:300px;
+            height: 300px;
+            
+        }
+
+        .A {
+            float:left;
+            text-align: center;
+            line-height: 100px;
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+            background-color: #77C386;
+        }
+
+        .B {
+            float:right;
+            width: 120px;
+            height: 120px;
+            border-radius: 10px;
+            border: 2px dashed #E48484;
+            position: relative;
+            display: grid;
+            place-items: center;
+        }
+        .B::after{
+            content: '拖拽到这个区域';
+            position: absolute;
+            color:#E48484;
+            font-size: 14px;
+            display: block;
+            z-index: -1;
+        }
+        .dragover{
+            border-color: #77C386;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="box">
+        <div id="A" class="A" draggable="true">A</div >
+        <div id="B" class="B"></div>
+    </div>
+    <script>
+        const A = document.getElementById('A');
+        const B = document.getElementById('B');
+
+        A.addEventListener('dragstart', e=>{
+            e.dataTransfer.setData("text", e.target.id);
+           
+        });
+        A.addEventListener('dragend', e=>{
+            var srcID = e.dataTransfer.getData("text");
+            var isCon = B.contains(document.getElementById(srcID));
+            if(!isCon){
+                B.classList.remove('dragover')
+            }
+           
+        });
+
+        B.addEventListener('dragover', ev=>{
+            ev.preventDefault();
+            ev.target.classList.add('dragover');
+        })
+
+        B.addEventListener('drop',ev=>{
+            ev.preventDefault();
+            var srcID = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(srcID));
+        })
+    </script>
+</body>
+
+</html>

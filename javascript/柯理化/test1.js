@@ -8,15 +8,20 @@
 // 实现 add(1)(2)(3)
 
 //es5
-function add(x){
+function add(...args){
     return function(y){
         return function(z){
-            return x + y + z;
+
+            console.log(args, y ,z)
+            return args[0] + y + z;
         }
     }
 }
+
+ const res = add(1)(2)
+ console.log(res(3));
 //es6
-const add1 = x => y => z => x+y+z;
+// const add1 = x => y => z => x+y+z;
 
 // 柯理化的实现原理
 /**
