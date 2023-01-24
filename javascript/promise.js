@@ -7,8 +7,8 @@ function MyPromise(fn){
     function resolve (value){ 
         this.state = 'success'
         this.value = value;
-        this.suc_list.forEach(fn => {
-            fn();
+        this.suc_list.forEach(item => {
+            item();
         });
     }
     //如果失败
@@ -20,26 +20,40 @@ function MyPromise(fn){
 }
 
 MyPromise.prototype.then = function(onFulfilled, onRejected){
+    onFulfilled = typeof onFulfilled === 'function'? onFulfilled : v=>v;
+    onRejected = typeof onRejected === 'function'? onRejected : v=>v;
+
     return new MyPromise((_resolve, _reject)=>{
         //发布订阅 异步任务
         if(this.state === 'pending'){
-            this.suc_list.push(()=>{ const x = onFulfilled(this.value); _resolve(x)});
+            this.suc_list.push(()=>{ 
+                queueMicrotask(()=>{
+                    const x = onFulfilled(this.value); 
+                    if(x instanceof MyPromise){
+                        x.then(_resolve)
+                    }else{
+                        _resolve(x)
+                    }
+                })
+            });
         }
     
         //如果成功
         if(this.state === 'success'){
-            const x = onFulfilled(this.value);
-            _resolve(x)
+            queueMicrotask(()=>{
+                const x = onFulfilled(this.value);
+                _resolve(x)
+            })
         }
         //如果失败
         if(this.state === 'fail'){
-           const x =  onRejected(this.reason);
-           _reject(x)
+            queueMicrotask(()=>{
+                const x =  onRejected(this.reason);
+                _reject(x)
+            })
         }
     })
 }
-
-
 
 
 
