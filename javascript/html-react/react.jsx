@@ -1,8 +1,10 @@
 import Child from './child.jsx';
+import FuncCmp from './FuncCmp.jsx';
+import ClassCmp from './ClassCmp.jsx';
 class LikeButton extends React.Component {
     constructor(props) {
       super(props);
-      this.state = { count: 0, setScrollTop:0 };
+      this.state = { count: 0, setScrollTop:0 ,user:'小明'};
       this.addCount = this.addCount.bind(this)
       this.handleScroll = this.handleScroll.bind(this);
     }
@@ -33,6 +35,22 @@ class LikeButton extends React.Component {
             onScroll = {this.handleScroll}
         >
             <Child sTop = {this.state.setScrollTop} boxH = {500}/>
+        </div>
+        <div>
+        <label>
+          <b> 选项: </b>
+          <select
+            value={this.state.user}
+            onChange={e => this.setState({ user: e.target.value })}
+          >
+            <option value="小明">mm</option>
+            <option value="小白">bb</option>
+            <option value="小黄">hh</option>
+          </select>
+        </label>
+        <h1>{this.state.user}</h1>
+        <FuncCmp user={this.state.user}/>
+        <ClassCmp user={this.state.user}/>
         </div>
       </div>
     }

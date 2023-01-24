@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 function deepClone(obj){
     if(typeof obj !== 'object')return obj;
 
@@ -12,7 +10,6 @@ function deepClone(obj){
 }
 
 
->>>>>>> 6702544 (test ts)
 // 深拷贝：对对象内部进行深拷贝，支持 Array、Date、RegExp、DOM
 const deepCopy = (sourceObj) => {
     if (typeof sourceObj !== "object") return;
