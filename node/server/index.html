@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='./axios.min.js'></script>
+</head>
+<body>
+    <label>
+        <input  type="text" id="inp" />
+        <button id="btn">搜索</button>
+    </label>
+    <script>
+        const btn = document.querySelector('#btn')
+        const inp = document.querySelector('#inp');
+        btn.onclick = function(e){
+            console.log(e.target);
+            console.log(inp.value)
+            const con = document.createElement('div')
+            con.innerHTML = inp.value;
+           document.body.appendChild(con);
+           axios.get('/search?con='+inp.value).then((res)=>{
+            console.log(res)
+           })
+        }
+    </script>
+</body>
+</html>
