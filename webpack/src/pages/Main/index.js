@@ -3,21 +3,27 @@ import React, { useState, Suspense } from "react";
 import pic from "../../public/icon.jpg";
 import styles from "./index.less";
 
+
 // 懒加载要求 必须返回一个promise, resolve 接受一个组件
 const A_lazy = React.lazy(()=>{ 
-    return new Promise((resolve)=>{
-        setTimeout(()=>{
-            resolve(import(/* webpackChunkName: "pageA" */'../A'))
-        },2000)
-    })
+    // return new Promise((resolve)=>{
+    //     setTimeout(()=>{
+    //         resolve(import(/* webpackChunkName: "pageA" */'../A'))
+    //     },2000)
+    // })
+   return import(/* webpackChunkName: "pageA" */'../A')
 });
 const B_lazy = React.lazy(() => {
-    return new Promise(resolve=>{
-        setTimeout(() => {
-            resolve(import(/* webpackChunkName: "pageB" */'../B'));
-        }, 2000);
-    })
+    // return new Promise(resolve=>{
+    //     setTimeout(() => {
+    //         resolve(import(/* webpackChunkName: "pageB" */'../B'));
+    //     }, 2000);
+    // })
+    return import(/* webpackChunkName: "pageB" */'../B')
 });
+const C_lazy = React.lazy(()=>{
+    return import(/* webpackChunkName:"pageC" */'../C');
+})
 
 function Main() {
     const [value, setValue] = useState(0);
@@ -51,6 +57,7 @@ function Main() {
                         <button onClick={handleLazy}>react.lazy()点击懒加载:</button> 
                         <Suspense fallback={<div>Loading...</div>}>
                             {sel==='a'? <A_lazy/>: <B_lazy/>}
+                            <C_lazy/>
                         </Suspense>
                     </div>
                 </h1>
