@@ -19,7 +19,7 @@ const common_config = {
         // }
         modules:[
             'node_modules',
-            path.resolve(__dirname, '../loaders')
+            // path.resolve(__dirname, '../loaders')
         ]
     },
 
@@ -34,12 +34,15 @@ const common_config = {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 use:[
-                    {
-                        loader: path.resolve(__dirname, '../loaders/babel-loader.js')
-                    },
+                    
+                    // {
+                    //     loader: path.resolve(__dirname, '../loaders/babel-loader.js')
+                    // },
                     // {
                     //     loader:'custom-loader'
-                    // }
+                    // },
+                    { loader: "babel-loader",}
+                    
                 ] 
             },
             {

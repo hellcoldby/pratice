@@ -4,7 +4,8 @@ module.exports = function (api) {
         presets: [
             [
                 "@babel/preset-env",
-                {
+                {   
+                    loose:true,
                     targets: {
                         chrome: "67",
                     },
@@ -14,6 +15,14 @@ module.exports = function (api) {
             ],
             "@babel/preset-react",
         ],
-        plugins: [process.env.NODE_ENV === "production" ? {} : "react-refresh/babel"], //react热更新保存状态插件
+        plugins: [
+             //react热更新保存状态插件
+            process.env.NODE_ENV === "production" ? {} : "react-refresh/babel",
+            ["@babel/plugin-proposal-decorators",{
+                "legacy": true,
+                // decoratorsBeforeExport:false,
+            }],
+            ["@babel/plugin-proposal-class-properties", { "loose": true}]
+        ],
     };
 };

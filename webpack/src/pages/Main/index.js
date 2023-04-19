@@ -3,6 +3,9 @@ import React, { useState, Suspense } from "react";
 import pic from "../../public/icon.jpg";
 import styles from "./index.less";
 
+import { Provider } from 'mobx-react';
+import store from '../../store/index'
+
 
 // 懒加载要求 必须返回一个promise, resolve 接受一个组件
 const A_lazy = React.lazy(()=>{ 
@@ -23,6 +26,11 @@ const B_lazy = React.lazy(() => {
 });
 const C_lazy = React.lazy(()=>{
     return import(/* webpackChunkName:"pageC" */'../C');
+});
+
+//测试 mobx 
+const D_lazy = React.lazy(()=>{
+    return import(/* webpackChunkName:"pageC" */'../D')
 })
 
 function Main() {
@@ -40,11 +48,10 @@ function Main() {
     return (
         <>
             <div style={{ overflow: "hidden" }}>
-                <h1
-                    style={{ float: "left", width: "300px", border: "1px solid red" }}
+                <div
+                    style={{ width: "300px", border: "1px solid red" }}
                     
                 >
-                    {" "}
                     hello world1!
                     <p onClick={() => {
                         setValue(value === 0 ? 123 : 0);
@@ -58,18 +65,24 @@ function Main() {
                         <Suspense fallback={<div>Loading...</div>}>
                             {sel==='a'? <A_lazy/>: <B_lazy/>}
                             <C_lazy/>
+                           
                         </Suspense>
                     </div>
-                </h1>
-
-                <div style={{ float: "left", paddingRight: "50px" }}>
-                    <p>背景图</p>
-                    <div className={styles.bg}></div>
                 </div>
+                <Provider {...store}>
+                    <D_lazy />
+                </Provider>
 
-                <div style={{ float: "left", paddingRight: "50px" }}>
-                    <p>image 图</p>
-                    <img src={pic} />
+                <div style={{display:'flex'}}>
+                    <div style={{ float: "left", paddingRight: "50px" }}>
+                        <p>背景图</p>
+                        <div className={styles.bg}></div>
+                    </div>
+
+                    <div style={{ float: "left", paddingRight: "50px" }}>
+                        <p>image 图</p>
+                        <img src={pic} />
+                    </div>
                 </div>
             </div>
             <h2 style={{ color: "red" }}>test</h2>

@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 
-export default class Test extends Component {
+ class Test extends Component {
     state = {id:1}
     nextState = {init:'sss'}
   render() {
+  
     return (
       <>
       <div>test</div>
@@ -12,3 +13,4 @@ export default class Test extends Component {
     )
   }
 }
+export default Test

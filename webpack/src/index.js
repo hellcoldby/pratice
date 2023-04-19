@@ -4,12 +4,15 @@ import "./index.css";
 import Main from "./pages/Main";
 import reportWebVitals from "./reportWebVitals";
 
+
 //react18  createRoot 代替了 ReactDom.render
 const root = createRoot(document.getElementById("root"));
 
 root.render(
     <React.StrictMode>
-        <Main />
+        {/* <Provider {...store}> */}
+            <Main />
+        {/* </Provider>   */}
     </React.StrictMode>
 );
 reportWebVitals();

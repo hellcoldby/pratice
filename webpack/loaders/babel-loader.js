@@ -11,7 +11,7 @@ function loaders(content, map, mate){
         sourceMap:true,
 
     },(err, res)=>{
-        cb(err, res.code, res.map)
+       res && cb(err, res.code, res.map)
     })
     // return content;
 }
