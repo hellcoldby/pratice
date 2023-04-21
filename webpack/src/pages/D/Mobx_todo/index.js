@@ -1,5 +1,6 @@
 import React,{Component} from "react";
 import { observer, inject } from 'mobx-react';
+import { action } from 'mobx';
 
 @inject('todoList')
 @observer
@@ -14,6 +15,10 @@ class TodoListView extends Component {
         this.props.todoList.add(this.state.inputCon)
     }
 
+    toggleFinished = todo => {
+        this.props.todoList.toggleTodoFinished(todo);
+      };
+
     render (){
       
         return (<div>
@@ -24,7 +29,7 @@ class TodoListView extends Component {
                             <input
                                 type = "checkbox"
                                 checked = {todo.finished||false}
-                                onChange={()=> (todo.finished = !todo.finished)}
+                                onChange={()=> this.toggleFinished(todo)}
                             />
                             {todo.title}
                         </li>
@@ -34,6 +39,7 @@ class TodoListView extends Component {
             <label>
             <input type="text" onChange={(e)=>this.setState({inputCon: e.target.value})} />
             <button onClick={this.add}>点击添加列表</button>
+            <div>未勾选的列表数量为:{this.props.todoList.unfinishedTodoCount}</div>
             </label>
         </div>)
     }
