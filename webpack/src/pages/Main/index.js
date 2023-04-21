@@ -73,7 +73,7 @@ function Main() {
                     <D_lazy />
                 </Provider>
 
-                <div style={{display:'flex'}}>
+                <div style={{display:'flex', marginTop:'50px', border:'1px solid green'}}>
                     <div style={{ float: "left", paddingRight: "50px" }}>
                         <p>背景图</p>
                         <div className={styles.bg}></div>
