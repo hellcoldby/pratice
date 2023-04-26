@@ -5,6 +5,8 @@ import styles from "./index.less";
 
 import { Provider } from 'mobx-react';
 import store from '../../store/index'
+import E from '../E/index';
+import F from '../F/index';
 
 
 // 懒加载要求 必须返回一个promise, resolve 接受一个组件
@@ -32,6 +34,8 @@ const C_lazy = React.lazy(()=>{
 const D_lazy = React.lazy(()=>{
     return import(/* webpackChunkName:"pageC" */'../D')
 })
+
+
 
 function Main() {
     const [value, setValue] = useState(0);
@@ -72,6 +76,8 @@ function Main() {
                 <Provider {...store}>
                     <D_lazy />
                 </Provider>
+                {/* <E/> */}
+                <F/>
 
                 <div style={{display:'flex', marginTop:'50px', border:'1px solid green'}}>
                     <div style={{ float: "left", paddingRight: "50px" }}>

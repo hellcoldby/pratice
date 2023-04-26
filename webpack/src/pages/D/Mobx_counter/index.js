@@ -14,6 +14,7 @@ class Count extends Component {
       }
     render() {
         const { counter } = this.injected;
+        counter.count+=100;
         return <div>
             <div>
                 <h2>测试加减</h2>
