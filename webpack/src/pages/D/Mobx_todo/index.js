@@ -2,7 +2,7 @@ import React,{Component} from "react";
 import { observer, inject } from 'mobx-react';
 import { action } from 'mobx';
 
-@inject('todoList')
+@inject('todoList', 'counter')
 @observer
 class TodoListView extends Component {
     inputCon = '';
@@ -22,6 +22,8 @@ class TodoListView extends Component {
     render (){
       
         return (<div>
+            <h3>todo 测试</h3>
+             <p>{this.props.counter.result}</p>
             <ul>
                 {
                     this.props.todoList.todos.map(todo=>{

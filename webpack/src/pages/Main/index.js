@@ -52,18 +52,11 @@ function Main() {
     return (
         <>
             <div style={{ overflow: "hidden" }}>
+                <h1>懒加载测试</h1>
                 <div
-                    style={{ width: "300px", border: "1px solid red" }}
+                    style={{height:'100px', margin:'0 50px', width: "100px", border: "1px solid red" ,display:"flex", justifyContent:'center'}}
                     
                 >
-                    hello world1!
-                    <p onClick={() => {
-                        setValue(value === 0 ? 123 : 0);
-                    }}>
-                        click：---&gt;<button>{value}</button>
-                    </p>
-                    <p> 父级状态变化 不触发子组件更新 </p>
-                   
                     <div >
                         <button onClick={handleLazy}>react.lazy()点击懒加载:</button> 
                         <Suspense fallback={<div>Loading...</div>}>
@@ -73,13 +66,16 @@ function Main() {
                         </Suspense>
                     </div>
                 </div>
+
+
                 <Provider {...store}>
                     <D_lazy />
                 </Provider>
                 {/* <E/> */}
-                <F/>
+                {/* <F/> */}
 
-                <div style={{display:'flex', marginTop:'50px', border:'1px solid green'}}>
+                <h1>图片加载测试</h1>
+                <div style={{display:'flex', marginTop:'50px', border:'1px solid green', margin:'0 50px'}}>
                     <div style={{ float: "left", paddingRight: "50px" }}>
                         <p>背景图</p>
                         <div className={styles.bg}></div>
@@ -91,7 +87,7 @@ function Main() {
                     </div>
                 </div>
             </div>
-            <h2 style={{ color: "red" }}>test</h2>
+            
         </>
     );
 }

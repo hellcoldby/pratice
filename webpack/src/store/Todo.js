@@ -22,9 +22,7 @@ class Todo {
 
     @action.bound add(name='one'){
       const newTodo = new Todo(name);
-      runInAction(() => {
         this.todos.push(newTodo);
-      });  
     }
     @action.bound toggleTodoFinished(todo) {
       todo.toggle();
