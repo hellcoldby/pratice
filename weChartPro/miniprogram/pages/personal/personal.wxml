@@ -1,0 +1,5 @@
+<scroll-view scroll-y type="list" style="height: 100vh;">
+  <view class="container">
+    <text class="nickname-label"> 个人中心</text>
+  </view>
+</scroll-view>

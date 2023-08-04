@@ -1,0 +1,19 @@
+<!--index.wxml-->
+<scroll-view scroll-y type="list" style="height: 100vh;">
+  <view class="container">
+    <view class="userinfo">
+      <block wx:if="{{canIUseNicknameComp}}">
+
+        <view class="nickname-wrapper">
+          <text class="nickname-label">视频页面</text>
+        </view>
+      </block>
+    
+      <block>
+        <test>21312312</test>
+      
+      </block>
+    </view>
+    
+  </view>
+</scroll-view>
