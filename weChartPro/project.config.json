@@ -15,12 +15,13 @@
     "coverView": false,
     "postcss": false,
     "minified": false,
-    "enhance": false,
+    "enhance": true,
     "showShadowRootInWxmlPanel": false,
     "packNpmRelationList": [],
     "ignoreUploadUnusedFiles": true,
     "compileHotReLoad": false,
-    "skylineRenderEnable": true
+    "skylineRenderEnable": true,
+    "es6": true
   },
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
@@ -30,10 +31,9 @@
     "tabIndent": "insertSpaces",
     "tabSize": 2
   },
-  "appid": "wx2b79687a6c8a7847",
-  "libVersion": "2.32.3",
   "packOptions": {
     "ignore": [],
     "include": []
-  }
+  },
+  "appid": "wx2b79687a6c8a7847"
 }

@@ -7,12 +7,14 @@
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#000",
-    "navigationBarTitleText": "Weixin",
-    "navigationBarTextStyle": "black"
+    "navigationBarBackgroundColor": "#235467",
+    "navigationBarTitleText": "测试导航栏",
+    "navigationBarTextStyle": "white",
+    "homeButton": true,
+    "backgroundColor": "#226688"
   },
   "style": "v2",
-  "renderer": "skyline",
+  "renderer": "webview",
   "rendererOptions": {
     "skyline": {
       "defaultDisplayBlock": true,
