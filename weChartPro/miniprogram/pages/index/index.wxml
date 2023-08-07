@@ -1,6 +1,6 @@
 <!--index.wxml-->
 <scroll-view scroll-y type="list" style="height: 100vh;">
   <view class="container">
-    <view class="box">时间{{time}}</view>
+    <view class="box">时间 {{time}}</view>
   </view>
 </scroll-view>

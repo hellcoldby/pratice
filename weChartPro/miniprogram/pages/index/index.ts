@@ -1,34 +1,56 @@
 // index.ts
 // 获取应用实例
-const app = getApp<IAppOption>()
+// const app = getApp<IAppOption>()
 
-Component({
-  data: {
-    motto: '1111111111111111111',
-    time: (new Date()).toString,
-    hasUserInfo: true,
-    canIUseGetUserProfile: wx.canIUse('getUserProfile'),
-    canIUseNicknameComp: wx.canIUse('input.type.nickname'),
+// Component({
+//   data: {
+//     motto: '1111111111111111111',
+//     time: (new Date()).toString,
+//     hasUserInfo: true,
+//     canIUseGetUserProfile: wx.canIUse('getUserProfile'),
+//     canIUseNicknameComp: wx.canIUse('input.type.nickname'),
+//   },
+//   methods: {
+//     // 事件处理函数
+//     bindViewTap() {
+//       wx.navigateTo({
+//         url: '../logs/logs',
+//       })
+//     },
+//     getUserProfile() {
+//       // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认，开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
+//       wx.getUserProfile({
+//         desc: '展示用户信息', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+//         success: (res) => {
+//           console.log(res)
+//           this.setData({
+//             userInfo: res.userInfo,
+//             hasUserInfo: true
+//           })
+//         }
+//       })
+//     },
+//   },
+// })
+
+Page({
+  data:{
+    time: ''
   },
-  methods: {
-    // 事件处理函数
-    bindViewTap() {
-      wx.navigateTo({
-        url: '../logs/logs',
-      })
-    },
-    getUserProfile() {
-      // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认，开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
-      wx.getUserProfile({
-        desc: '展示用户信息', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
-        success: (res) => {
-          console.log(res)
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          })
-        }
-      })
-    },
-  },
+  onLoad: function () {
+    setInterval(() => {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      const hour = String(now.getHours()).padStart(2, '0');
+      const minute = String(now.getMinutes()).padStart(2, '0');
+      const second = String(now.getSeconds()).padStart(2, '0');
+
+      const dateTime:string = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+      this.setData({
+        time: dateTime
+      });
+    }, 1000);
+  }
 })
