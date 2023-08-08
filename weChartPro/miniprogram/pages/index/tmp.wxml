@@ -1,0 +1,5 @@
+<!-- item.wxml -->
+<template name="item">
+  <text style="color: red; font-size: 16px;">模版引入：{{text}}</text>
+  <text>注意：模版不支持嵌套引用</text>
+</template>

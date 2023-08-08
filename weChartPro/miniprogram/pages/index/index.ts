@@ -3,7 +3,7 @@ interface TinitToPage{
   switch:(e:any)=>void;
   addToFront:(e:any)=>void;
   subtractToFront:(e:any)=>void;
-  addNumberToFront:(e:any)=>void;
+
 }
 interface TinitToData{
   [key:string]:any
@@ -20,8 +20,12 @@ Page<TinitToData, TinitToPage>({
     array: [
       {
         message:'foo',
+        msg: 'this is a template foo',
+        time: '2023-06-18'
       },{
-        message:'bar'
+        message:'bar',
+        msg: 'this is a template bar',
+        time: '2023-06-18'
       }
     ],
     objectArray: [
@@ -80,10 +84,5 @@ Page<TinitToData, TinitToPage>({
       })
     }
   },
-  addNumberToFront: function(e){
-    this.data.numberArray = [ this.data.numberArray.length + 1 ].concat(this.data.numberArray)
-    this.setData({
-      numberArray: this.data.numberArray
-    })
-  }
+
 })
