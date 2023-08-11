@@ -7,7 +7,7 @@
     <view class="box">时间 {{time}}</view>
   </view>
   <view style="margin-bottom: 20rpx; ">
-    <text>所有的wxml 标签共同的属性有： <text style="color:red">id、 class、style、hidden、data-*、bind/catch*</text></text>
+    <text>所有的wxml 标签<text style="background-color:yellow; font-weight:bolder;">共同的属性</text>有： <text style="color:red">id、 class、style、hidden、data-*、bind/catch*</text></text>
   </view>
   <!-- 数据绑定： 变量 -->
   <view>数据绑定： {{msg}}</view>
@@ -25,19 +25,19 @@
   <!-- 列表渲染1 -->
   <view style="display: flex; ">
     <block>
-      <view wx:for="{{array}}">{{index}}:{{item.message}}</view>
+      <view wx:for="{{array}}" wx:key="index">{{index}}:{{item.message}}</view>
     </block>
   </view>
   <!-- 列表渲染2： for 另一种写法 -->
   <view  style="display: flex; ">
-    <block wx:for="{{array}}">
+    <block wx:for="{{array}}" wx:key="index">
       <view>{{index}}:{{item.message}}</view>
     </block>
   </view>
   <!-- 列表渲染3： 自定义变量名 -->
   <view  style="display: flex; ">
   <block>
-    <view wx:for="{{array}}" wx:for-index="idx" wx:for-item="itemName">
+    <view wx:for="{{array}}" wx:key="index" wx:for-index="idx" wx:for-item="itemName">
       {{idx}}: {{itemName.message}}
     </view>
   </block>
@@ -52,11 +52,13 @@
     <button type="default" size="mini" bindtap="subtractToFront">删除</button>
   </block>
 
+  <abc></abc>
+
   <!-- 定义小程序模版：循环 -->
   <template name="msgItem">
     <view>{{item.msg}}:{{item.time}}</view>
   </template>
-  <block wx:for="{{array}}">
+  <block wx:for="{{array}}" wx:key="index">
     <template is="msgItem" data="{{item}}"></template>
   </block>
   <!-- 定义小程序模版：判断 -->
@@ -66,7 +68,7 @@
   <template name="even">
     <view>even</view>
   </template>
-  <block wx:for="{{[1, 2, 3, 4]}}">
+  <block wx:for="{{[1, 2, 3, 4]}}" wx:key="index">
     <template is="{{item % 2 == 0 ? 'even' : 'odd'}}" />
   </block>
   <!-- 引用 -->
