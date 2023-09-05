@@ -1,0 +1,49 @@
+<xr-scene>
+
+<!-- 官方的模型 -->
+  <!-- <xr-assets>
+    <xr-asset-load type="gltf" asset-id="miku" src="{{modelUrl}}" />
+  </xr-assets>
+  
+  <xr-gltf node-id="miku" model="miku" position="0 -1.3 0" scale="0.12 0.12 0.12" rotation="0 180 0" anim-autoplay cast-shadow/> -->
+
+<!-- 自定义模型无效 -->
+  <xr-assets>
+    <xr-asset-load type="gltf" asset-id="coco" src="./coco/flower.glb" />
+  </xr-assets>
+  <xr-gltf node-id="coco" model="coco" position="0 -1.3 0" scale="1 1 1" rotation="0 0 0" anim-autoplay cast-shadow/>
+
+  <!--自定义背景贴图无效  -->
+  <xr-asset-load type="texture" asset-id="weakme" src="./bg.png" />
+  <xr-env env-data="xr-frame-team-workspace-day" sky-map="weakme" is-sky2d />
+
+
+
+  <!-- 灯光  -->
+  <xr-light type="ambient" color="1 1 1" intensity="1" />
+  <xr-light type="directional" rotation="40 70 0" color="1 1 1" intensity="3" cast-shadow />
+
+
+
+
+
+
+     <xr-node position="1 1 1">
+     
+        <!-- 圆柱体 -->
+        <xr-mesh node-id="mesh-cylinder" position="0 -1.3 0" scale="2 0.03 2" geometry="cylinder" uniforms="u_baseColorFactor:1 0.776 0.364 1, u_metallicRoughnessValues: 0.0 0.0" receive-shadow></xr-mesh>
+
+          <!-- 球体 -->
+        <xr-mesh node-id="mesh-sphere" position="0 0 0" scale="0.1 0.1 0.1" geometry="sphere"  uniforms="u_metallicRoughnessValues: 0 0"></xr-mesh>
+        <xr-asset-material asset-id="mesh-sphere" effect="standard" states="alphaMode:BLEND" renderQueue="2500" />
+
+        <!-- 相机  -->
+        <xr-camera position="0 1 2.7" target="mesh-sphere" background="skybox" clear-color="0.1 0.3 0.6 1" camera-orbit-control>
+           
+                <xr-mesh node-id="mesh-plane" position="0 0 2" scale="1 1 2" rotation="90 0 0"  geometry="plane" uniforms="u_baseColorFactor:0.4 0.6 0.8 1"></xr-mesh>
+          
+        </xr-camera>
+     </xr-node>
+
+
+</xr-scene>

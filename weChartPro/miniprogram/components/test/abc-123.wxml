@@ -1,2 +1,6 @@
 <!--components/test/abc-123.wxml-->
-<text>这是个自定义组件： components/test/abc-123.wxml</text>
+<view class="inner">
+
+<text> 例如：components/test/abc-123.wxml</text>
+<view>自定义组件的所在目录不能以 “wx-”为前缀，否则报错</view>
+</view>

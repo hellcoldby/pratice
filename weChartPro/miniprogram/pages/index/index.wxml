@@ -52,7 +52,10 @@
     <button type="default" size="mini" bindtap="subtractToFront">删除</button>
   </block>
 
-  <abc></abc>
+  <view>
+    <text>自定义组件命名，只能是 小写字母+ 中划线/下划线的组合：</text>
+    <abc></abc>   
+  </view>
 
   <!-- 定义小程序模版：循环 -->
   <template name="msgItem">

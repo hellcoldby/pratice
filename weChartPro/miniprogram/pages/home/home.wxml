@@ -1,0 +1,16 @@
+<!--video.wxml-->
+<scroll-view scroll-y type="list" style="height: 100vh;">
+  <view class="container">
+    <!-- <image class="bgImg"  src="./image/homeBG.png"></image>
+    <image  class="title  {{clickEnter? 'hidden': 'show'}}" src="./image/Title.png"></image>
+    <view class="btn {{clickEnter? 'hidden': 'show'}}" bind:tap="clickIn">
+        <text class="btnText" >点击进入</text>
+        <image class="btnImage" src="./image/btn-normal-yellow.png"></image>
+    </view>
+
+    <view class="progress {{clickEnter? 'show': 'hidden'}}" >
+        <image class="progressImage" src="./image/Loading.png"></image> <text class="progressNumber">{{proNum}}%</text>
+    </view> -->
+    
+  </view>
+</scroll-view>
