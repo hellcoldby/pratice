@@ -4,36 +4,40 @@ import sortBy from "sort-by";
 
 export async function getContacts(query?:any) {
   await fakeNetwork(`getContacts:${query}`);
-  let contacts = await localforage.getItem("contacts");
+  // localforge 返回的是对象数组{id:string; createAt:number;}
+  let contacts:any[]|null= await localforage.getItem("contacts");
   if (!contacts) contacts = [];
   if (query) {
-    contacts = matchSorter(contacts, query, { keys: ["first", "last"] });
+    contacts  = matchSorter(contacts as any[], query, { keys: ["first", "last"] });
   }
   return contacts.sort(sortBy("last", "createdAt"));
 }
 
 export async function createContact() {
   await fakeNetwork();
-  let id = Math.random().toString(36).substring(2, 9);
-  let contact = { id, createdAt: Date.now() };
-  let contacts = await getContacts();
+  const id = Math.random().toString(36).substring(2, 9);
+  const contact = { id, createdAt: Date.now() };
+  // getContants 返回的是对象数组{id:string; createAt:number;}
+  const contacts:any[] = await getContacts();
   contacts.unshift(contact);
   await set(contacts);
   return contact;
 }
 
-export async function getContact(id) {
+export async function getContact(id:string) {
   await fakeNetwork(`contact:${id}`);
-  let contacts = await localforage.getItem("contacts");
-  let contact = contacts.find(contact => contact.id === id);
+  const contacts:any[]|null = await localforage.getItem("contacts");
+  if(!contacts) return null;
+  const contact = contacts.find(contact => contact.id === id);
   return contact ?? null;
 }
 
-export async function updateContact(id, updates) {
+export async function updateContact(id:string, updates) {
+  console.log(updates);
   await fakeNetwork();
-  let contacts = await localforage.getItem("contacts");
-  let contact = contacts.find(contact => contact.id === id);
-  if (!contact) throw new Error("No contact found for", id);
+  const contacts:any[]|null = await localforage.getItem("contacts");
+  if (!contacts) throw new Error("No contact found for"+id);
+  const contact = contacts.find(contact => contact.id === id);
   Object.assign(contact, updates);
   await set(contacts);
   return contact;
@@ -57,7 +61,7 @@ function set(contacts) {
 // fake a cache so we don't slow down stuff we've already seen
 let fakeCache:{[props:string]:any} = {};
 
-async function fakeNetwork(key:string) {
+async function fakeNetwork(key?:string) {
   if (!key) {
     fakeCache = {};
   }
@@ -68,6 +72,6 @@ async function fakeNetwork(key:string) {
 
   fakeCache[key] = true;
   return new Promise(res => {
-    setTimeout(res, Math.random() * 800);
+    setTimeout(res, Math.random() * 1500);
   });
 }

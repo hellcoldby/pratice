@@ -1,4 +1,4 @@
-import { Form, useLoaderData} from "react-router-dom";
+import { Form, useLoaderData, useFetcher} from "react-router-dom";
 
 interface CONTACT_TYPE{
   [props:string]:any;
@@ -12,7 +12,7 @@ export default function Contact() {
   //   last: "Name",
   //   avatar: "https://placekitten.com/g/200/200",
   //   twitter: "your_handle",
-  //   notes: "Some notes",
+  //   notes: "Some notes",                                                             
   //   favorite: true,
   // };
 
@@ -78,9 +78,10 @@ export default function Contact() {
 
 function Favorite({ contact }:{contact:CONTACT_TYPE}) {
   // yes, this is a `let` for later
+  const fetcher = useFetcher();
   const favorite:any = contact.favorite;
   return (
-    <Form method="post">
+    <fetcher.Form method="post">
       <button
         name="favorite"
         value={favorite ? "false" : "true"}
@@ -92,6 +93,6 @@ function Favorite({ contact }:{contact:CONTACT_TYPE}) {
       >
         {favorite ? "★" : "☆"}
       </button>
-    </Form>
+    </fetcher.Form>
   );
 }
