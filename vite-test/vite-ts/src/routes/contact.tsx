@@ -83,6 +83,7 @@ function Favorite({ contact }:{contact:CONTACT_TYPE}) {
   if (fetcher.formData) {
     favorite = fetcher.formData.get("favorite") === "true";
   }
+  // console.log(favorite);
 
   return (
     <fetcher.Form method="post">

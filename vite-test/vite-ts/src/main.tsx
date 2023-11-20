@@ -14,8 +14,10 @@ const router = createBrowserRouter([
     path:'/',
     element:<Root/>,
     errorElement:<ErrorPage/>,
-    loader: async({request})=>{
-      console.log(request)
+    loader: async(args)=>{
+      const {request, params } = args;
+      console.log(args);
+      // console.log(request)
       const url = new URL(request.url);
       const q = url.searchParams.get("q");
       const contacts = await getContacts(q);
@@ -26,6 +28,10 @@ const router = createBrowserRouter([
       return redirect(`/contacts/${contact.id}/edit`);
       // return { contact };
     },
+    shouldRevalidate:(({currentUrl})=>{
+      console.log( 'in', currentUrl);
+      return true
+    }),
     children: [
       {
         errorElement: <ErrorPage />,
@@ -36,7 +42,7 @@ const router = createBrowserRouter([
             element: <Contact />,
             loader: async(match)=>{
               const {params} = match;
-              // console.log(match);
+              console.log(match);
               const contact = await getContact(params.contactId);
               if (!contact) {
                 throw new Response("", {
@@ -44,15 +50,19 @@ const router = createBrowserRouter([
                   statusText: "Not Found",
                 });
               }
-              
+              console.log(contact)
               return { contact };
             },
             action: async({ request, params })=>{
+              // console.log('action---', request);
+              console.log('action---', params);
+              // console.log(request.formData);
               const formData = await request.formData();
               return updateContact(params.contactId, {
                 favorite: formData.get("favorite") === "true",
               });
-            }
+            },
+    
           },
           {
             path: "contacts/:contactId/edit",
