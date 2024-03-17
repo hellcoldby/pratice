@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>长列表渲染</title>
+        <style>
+            #wrap {
+                width: 500px;
+                height: 500px;
+                border: 2px solid red;
+                margin: 0 auto;
+                overflow-y: scroll;
+                position: relative;
+            }
+            #conBox {
+                width: 500px;
+                position: absolute;
+                top: 0;
+            }
+        </style>
+        <script>
+            // 写一个防抖，动作完成才执行
+            function debounce(func, wait) {
+                let timeout;
+                return function () {
+                    const context = this;
+                    const args = arguments;
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => func.apply(context, args), wait);
+                };
+            }
+
+        // 写一个防抖，先执行一次，再等动作完成
+            function debounce1 (func, wait){
+                let timeout;
+                return function(){
+                    const context = this;
+                    if(timeout){
+                        clearTimeout(timeout);
+                        timeout = setTimeout(()=>{
+                            timeout = null;
+                        },wait);
+                    }else{
+                        func.apply(context, arguments);
+                    }
+
+                }
+            }
+
+
+            // 写一个节流
+
+            function throttle(func, wait){
+                let timeout;
+                return function(){
+                    if(!timeout){
+                       timeout = setTimeout(() => {
+                            func.apply(this, arguments);
+                            clearTimeout(timeout);
+                            timeout = null;
+                        }, wait);
+                    }
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div id="wrap">
+            <div id="paddingBox"></div>
+            <div id="conBox"></div>
+        </div>
+        <script>
+            // 假设数据总数位1000；
+            const total = 1000;
+            // 每条内容的高度
+            const conH = 50;
+            // box占为高度要大于 > wrap外部盒子的高度, 形成滚动条
+            const wrap = document.getElementById("wrap");
+            const paddingBox = document.getElementById("paddingBox");
+            const conBox = document.getElementById("conBox");
+
+            // 滚动条占为高度 = 假设有1000条数据,每条数据的高度是100px,那么paddingBox 的占位高度为 1000 * 100px
+            paddingBox.style.height = conH * total + "px"; //形成滚动条
+
+            // 实际展示的条数 = 外部盒子的高度/每条内容高度
+            const count = Math.round(wrap.offsetHeight / conH)+5;
+            console.log("可视区域条目：", count);
+
+            /**
+             * 插入条目
+             * startIndex  开始序列
+             * endIndex  结束序列
+             **/
+            function addDom(startIndex = 0, endIndex = 10) {
+                const fragment = document.createDocumentFragment();
+                for (let i = startIndex; i < endIndex; i++) {
+                    const div = document.createElement("div");
+                    div.className = "item";
+                    div.style.height = conH - 5 + "px";
+                    div.style.width = "100%";
+                    div.style.background = "yellow";
+                    div.style.marginBottom = "5px";
+                    div.innerText = i + 1;
+                    div.style.boxSizing = "borderBox";
+                    fragment.appendChild(div);
+                }
+
+                conBox.appendChild(fragment);
+            }
+            addDom(0, count);
+
+            // 监听占为paddingBox 滚动的高度，当向上滚动的高度大于> 一条内容高度conH 的时候就补充一条
+            function fn() {
+                const scrollTop = this.scrollTop;
+
+                // 可视范围内开始的序列
+                const viewPort_startIndex = Math.round(scrollTop / conH);
+                // 可视范围内结束的序列
+                const viewport_endIndex = viewPort_startIndex + count;
+
+                console.log(viewPort_startIndex, viewport_endIndex);
+
+                // 先移除前一批dom
+                const items = document.querySelectorAll(".item");
+                const items_array = Array.prototype.slice.call(items);
+                items_array.forEach((ele) => {
+                    ele.remove();
+                });
+
+                // 根据新的起始序列生成新的一批dom,
+                addDom(viewPort_startIndex, viewport_endIndex);
+                // 保持位置固定在可视窗口内
+                conBox.style.transform = `translateY(${scrollTop}px)`;
+            }
+
+            wrap.addEventListener("scroll", throttle(fn, 150));
+        </script>
+    </body>
+</html>
